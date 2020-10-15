@@ -1,0 +1,23 @@
+canvas {
+    border: 1px solid black;
+    width: 80%;
+    height: 100%;
+    background-color: white;
+}
+
+body, html {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    padding: 0px;
+}
+
+#root {
+    height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+    canvas {
+        width: 100%;
+    }
+}

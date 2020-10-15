@@ -1,0 +1,19 @@
+#home {
+    background: black;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+}
+
+#canvasContainer {
+    background-color: #50A;
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+}
+
+#controlContainer {
+    background-color: orange;
+    flex: 0 1 auto;
+    height: 15%;
+}

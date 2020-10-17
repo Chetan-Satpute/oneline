@@ -1,19 +1,19 @@
 import React from 'react';
 
-class NavBar extends React.Component {
+function NavBar(props) {
+    return(
+        <nav className="navbar navbar-light bg-light">
 
-    render() {
-        return (
-            <nav className="navbar navbar-light bg-light">
+            {/* Button to toggle side bar only on mobile devices */}
+            <button 
+                className="navbar-toggler-icon btn" 
+                type="button"
+                onClick={props.toggleSidebar} />
 
-                {/* Button to toggle side bar only on mobile devices */}
-                <button className="navbar-toggler-icon btn" type="button" />
-
-                <span className="navbar-brand">One Line</span>
+            <span className="navbar-brand">One Line</span>
                 
-            </nav>
-        );
-    }
+        </nav>
+    );
 }
 
 export default NavBar;

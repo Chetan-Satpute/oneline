@@ -6,16 +6,31 @@ import SideBar from './SideBar';
 import './css/app.css';
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            sideBar: window.screen.width > 800
+        }
+
+        this.toggleSidebar = this.toggleSidebar.bind(this);
+    }
+
+    toggleSidebar() {
+        this.setState({sideBar: !this.state.sideBar});
+    }
 
     render() {
         return (
             <React.Fragment>
 
-                <NavBar />
+                <NavBar 
+                    sideBar={this.state.sideBar} 
+                    toggleSidebar={this.toggleSidebar} />
 
                 <div id="main">
 
-                    <SideBar />
+                    {this.state.sideBar && <SideBar />}
 
                     <div id="home">
 

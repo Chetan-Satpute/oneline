@@ -17,15 +17,15 @@ class App extends React.Component {
     }
 
     toggleSidebar() {
-        this.setState({sideBar: !this.state.sideBar});
+        this.setState({ sideBar: !this.state.sideBar });
     }
 
     render() {
         return (
             <React.Fragment>
 
-                <NavBar 
-                    sideBar={this.state.sideBar} 
+                <NavBar
+                    sideBar={this.state.sideBar}
                     toggleSidebar={this.toggleSidebar} />
 
                 <div id="main">

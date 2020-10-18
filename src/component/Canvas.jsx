@@ -1,5 +1,6 @@
 import React from 'react';
 import Node from './js/node';
+import Segment from './js/segment';
 
 class Canvas extends React.Component {
 
@@ -20,9 +21,6 @@ class Canvas extends React.Component {
         // Normalise coordinate system to use css pixels.
         this.ctx.scale(scale, scale);
 
-        var node = new Node(50, 50);
-        node.draw(this.ctx);
-        
     }
 
     render() {

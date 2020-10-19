@@ -9,7 +9,7 @@ class Canvas extends React.Component {
 
         this.state = {
             nodes: [],
-            segments: [],
+            segments: []
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -37,23 +37,36 @@ class Canvas extends React.Component {
 
     handleClick(event) {
 
-        var pos = utils.get_coordinates(this.canvas, event);    // Get current coordinates of mouse
-        var nodeColor = "#50A";                                 // Color of new node
+        var pos = utils.get_coordinates(this.canvas, event);    // Get current mouse coordinates
 
-        var node = new Node(pos.x, pos.y);
+        var node = utils.node_overlap(this.state.nodes, pos);   // Check if node overlaps an existing node
+
+        if(node) { node.active = !node.active } 
+        else {
+            node = new Node(pos.x, pos.y);
         
-        // Update State
-        var nodeList = this.state.nodes;
-        nodeList.push(node);
-        this.setState({ nodes: nodeList });
+            // Update State
+            var nodeList = this.state.nodes;
+            nodeList.push(node);
+            this.setState({ nodes: nodeList });
+        }
 
-        // Render node
-        node.draw(this.ctx, nodeColor);
+        this.render();
     }
 
 
     render() {
 
+        // Clear canvas context
+        if(this.ctx) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+
+        // Render all nodes
+        this.state.nodes.forEach(node => {
+            node.draw(this.ctx);
+        });
+        
         return (
             <canvas 
                 id="canvas"

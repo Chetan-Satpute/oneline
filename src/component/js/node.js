@@ -3,17 +3,18 @@ class Node {
         this.x = x;
         this.y = y;
         this.radius = 10;
+        this.color = "#50A";
         this.outerRadius = this.radius + 10;
         this.active = false;
     }
 
-    draw(ctx, color) {
+    draw(ctx) {
+
+        ctx.fillStyle = this.color;
 
         if(this.active) {
             
             ctx.beginPath();
-            
-            if(color) { ctx.fillStyle = color }
             
             ctx.arc(this.x, this.y, this.outerRadius, 0, Math.PI * 2, true);
             
@@ -25,9 +26,7 @@ class Node {
         }
         
         ctx.beginPath();
-        
-        if(color) { ctx.fillStyle = color }
-        
+                
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
         
         ctx.fill();

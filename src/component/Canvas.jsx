@@ -41,14 +41,51 @@ class Canvas extends React.Component {
 
         var node = utils.node_overlap(this.state.nodes, pos);   // Check if node overlaps an existing node
 
-        if(node) { node.active = !node.active } 
-        else {
+        /* 
+        *   If current position does not coincide with an existing node
+        *   Create a new node
+        */
+        if(!node) {
+
             node = new Node(pos.x, pos.y);
         
             // Update State
             var nodeList = this.state.nodes;
             nodeList.push(node);
             this.setState({ nodes: nodeList });
+        }
+
+        if(this.tool) {
+            // When tool is active
+
+            // When end node is same as start node
+            if (node.active) { node.active = false }
+            else {
+
+                var segment = new Segment(this.segmentStart, node);
+
+                // Add new segment to state
+                var segmentList = this.state.segments;
+                segmentList.push(segment);
+                this.setState({ segments: segmentList });
+                
+                // Inactive end nodes of segment
+                var nodeList = this.state.nodes;
+                nodeList[nodeList.indexOf(this.segmentStart)].active = false;
+                nodeList[nodeList.indexOf(node)].active = false;
+                this.setState({ nodes: nodeList });
+            }
+
+            // Reset tool
+            this.tool = false;
+            this.segmentStart = null;
+            
+        } else {
+            // When tool is inactive
+            
+            node.active = true;
+            this.tool = true;
+            this.segmentStart = node;
         }
 
         this.render();
@@ -62,6 +99,11 @@ class Canvas extends React.Component {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
 
+        // Render all segments
+        this.state.segments.forEach(segment => {
+            segment.draw(this.ctx);
+        });
+        
         // Render all nodes
         this.state.nodes.forEach(node => {
             node.draw(this.ctx);

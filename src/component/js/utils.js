@@ -16,10 +16,15 @@ export function node_overlap(nodes, pos) {
         var distance = Math.sqrt(((node.x - pos.x) * (node.x - pos.x)) + ((node.y - pos.y) * (node.y - pos.y)));
 
         if (distance <= (node.outerRadius * 2)) {
-            console.log("is less");
             return node;
         }
     }
 
     return false;
+}
+
+export function drawLine(ctx, a, b) {
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.stroke();
 }

@@ -13,6 +13,7 @@ class Canvas extends React.Component {
         }
 
         this.handleClick = this.handleClick.bind(this);
+        this.mouseMove = this.mouseMove.bind(this);
     }
 
     componentDidMount() {
@@ -34,33 +35,51 @@ class Canvas extends React.Component {
 
     }
 
+    mouseMove(event) {
+
+        var pos = utils.get_coordinates(this.canvas, event);
+        var node = utils.node_overlap(this.state.nodes, pos);
+        var nodeList = this.state.nodes;
+
+        // Inactivate previous hover node except start node
+        if (this.hoverNode && this.hoverNode != this.segmentStart) {
+            nodeList[nodeList.indexOf(this.hoverNode)].active = false;
+        }
+
+        // If cursor on node other than start node
+        // Activate node
+        if (node && node !== this.segmentStart) {
+            this.hoverNode = node;
+            this.hoverNode.active = true;
+
+            // Update State
+            nodeList[nodeList.indexOf(node)] = this.hoverNode;
+        }
+
+        this.setState({ nodes: nodeList });
+    }
 
     handleClick(event) {
 
-        var pos = utils.get_coordinates(this.canvas, event);    // Get current mouse coordinates
+        var pos = utils.get_coordinates(this.canvas, event);    // Currnet position
+        var node = utils.node_overlap(this.state.nodes, pos);   // node on current position or false
+        var nodeList = this.state.nodes;
 
-        var node = utils.node_overlap(this.state.nodes, pos);   // Check if node overlaps an existing node
-
-        /* 
-        *   If current position does not coincide with an existing node
-        *   Create a new node
-        */
-        if(!node) {
+        // Create a new node on current position
+        if (!node) {
 
             node = new Node(pos.x, pos.y);
-        
-            // Update State
-            var nodeList = this.state.nodes;
+
+            // Add new node in list of existing nodes 
             nodeList.push(node);
             this.setState({ nodes: nodeList });
         }
 
-        if(this.tool) {
+        if (this.tool) {
             // When tool is active
 
-            // When end node is same as start node
-            if (node.active) { node.active = false }
-            else {
+            // End node and start node are different
+            if (node !== this.segmentStart) {
 
                 var segment = new Segment(this.segmentStart, node);
 
@@ -68,9 +87,8 @@ class Canvas extends React.Component {
                 var segmentList = this.state.segments;
                 segmentList.push(segment);
                 this.setState({ segments: segmentList });
-                
+
                 // Inactive end nodes of segment
-                var nodeList = this.state.nodes;
                 nodeList[nodeList.indexOf(this.segmentStart)].active = false;
                 nodeList[nodeList.indexOf(node)].active = false;
                 this.setState({ nodes: nodeList });
@@ -79,10 +97,10 @@ class Canvas extends React.Component {
             // Reset tool
             this.tool = false;
             this.segmentStart = null;
-            
+
         } else {
             // When tool is inactive
-            
+
             node.active = true;
             this.tool = true;
             this.segmentStart = node;
@@ -95,7 +113,7 @@ class Canvas extends React.Component {
     render() {
 
         // Clear canvas context
-        if(this.ctx) {
+        if (this.ctx) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
 
@@ -103,15 +121,16 @@ class Canvas extends React.Component {
         this.state.segments.forEach(segment => {
             segment.draw(this.ctx);
         });
-        
+
         // Render all nodes
         this.state.nodes.forEach(node => {
             node.draw(this.ctx);
         });
-        
+
         return (
-            <canvas 
+            <canvas
                 id="canvas"
+                onMouseMove={this.mouseMove}
                 onClick={this.handleClick}>
                 Canvas not supported.
             </canvas>

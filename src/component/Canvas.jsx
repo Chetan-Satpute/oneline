@@ -41,6 +41,10 @@ class Canvas extends React.Component {
         var node = utils.node_overlap(this.state.nodes, pos);
         var nodeList = this.state.nodes;
 
+        // When tool Active show a segment that follow cursor
+        if(!node) { node = new Node(pos) }
+        if(this.segmentStart) { this.hoverSegment = new Segment(this.segmentStart, node) }
+
         // Inactivate previous hover node except start node
         if (this.hoverNode && this.hoverNode != this.segmentStart) {
             nodeList[nodeList.indexOf(this.hoverNode)].active = false;
@@ -68,7 +72,7 @@ class Canvas extends React.Component {
         // Create a new node on current position
         if (!node) {
 
-            node = new Node(pos.x, pos.y);
+            node = new Node(pos);
 
             // Add new node in list of existing nodes 
             nodeList.push(node);
@@ -97,6 +101,7 @@ class Canvas extends React.Component {
             // Reset tool
             this.tool = false;
             this.segmentStart = null;
+            this.hoverSegment = null;
 
         } else {
             // When tool is inactive
@@ -126,6 +131,9 @@ class Canvas extends React.Component {
         this.state.nodes.forEach(node => {
             node.draw(this.ctx);
         });
+
+        // Render hoverSegment
+        if(this.hoverSegment) { this.hoverSegment.draw(this.ctx) }
 
         return (
             <canvas

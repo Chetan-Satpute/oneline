@@ -1,7 +1,7 @@
 class Node {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
+    constructor(position) {
+        this.x = position.x;
+        this.y = position.y;
         this.radius = 10;
         this.color = "#50A";
         this.outerRadius = this.radius + 10;

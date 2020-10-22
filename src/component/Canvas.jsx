@@ -43,16 +43,16 @@ class Canvas extends React.Component {
 
         // When tool Active show a segment that follow cursor
         if(!node) { node = new Node(pos) }
-        if(this.segmentStart) { this.hoverSegment = new Segment(this.segmentStart, node) }
+        if(this.toolStart) { this.hoverSegment = new Segment(this.toolStart, node) }
 
         // Inactivate previous hover node except start node
-        if (this.hoverNode && this.hoverNode != this.segmentStart) {
+        if (this.hoverNode && this.hoverNode !== this.toolStart) {
             nodeList[nodeList.indexOf(this.hoverNode)].active = false;
         }
 
         // If cursor on node other than start node
         // Activate node
-        if (node && node !== this.segmentStart) {
+        if (node && node !== this.toolStart) {
             this.hoverNode = node;
             this.hoverNode.active = true;
 
@@ -83,9 +83,9 @@ class Canvas extends React.Component {
             // When tool is active
 
             // End node and start node are different
-            if (node !== this.segmentStart) {
+            if (node !== this.toolStart) {
 
-                var segment = new Segment(this.segmentStart, node);
+                var segment = new Segment(this.toolStart, node);
 
                 // Add new segment to state
                 var segmentList = this.state.segments;
@@ -93,14 +93,14 @@ class Canvas extends React.Component {
                 this.setState({ segments: segmentList });
 
                 // Inactive end nodes of segment
-                nodeList[nodeList.indexOf(this.segmentStart)].active = false;
+                nodeList[nodeList.indexOf(this.toolStart)].active = false;
                 nodeList[nodeList.indexOf(node)].active = false;
                 this.setState({ nodes: nodeList });
             }
 
             // Reset tool
             this.tool = false;
-            this.segmentStart = null;
+            this.toolStart = null;
             this.hoverSegment = null;
 
         } else {
@@ -108,7 +108,7 @@ class Canvas extends React.Component {
 
             node.active = true;
             this.tool = true;
-            this.segmentStart = node;
+            this.toolStart = node;
         }
 
         this.render();

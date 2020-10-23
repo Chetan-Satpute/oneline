@@ -6,9 +6,8 @@ class Solver {
     }
 
     start() {
-        this.nodes[0].color = "green";
-        this.nodes[0].active = true;
-        this.segments[0].active = true;
+        this.segments.color = "green";
+        this.segments[0].flow = { ab: true };
 
         this.render();
     }

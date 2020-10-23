@@ -7,7 +7,7 @@ class Controls extends React.Component {
             <div>
                 <button 
                     type="button"
-                    onClick={this.solve}>
+                    onClick={this.props.solve}>
                     Solve
                 </button>
             </div>

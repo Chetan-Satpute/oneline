@@ -3,6 +3,7 @@ import Node from './js/node';
 import Segment from './js/segment';
 import * as utils from './js/utils';
 import Controls from './Controls';
+import Solver from './js/solver';
 
 class Canvas extends React.Component {
     constructor(props) {
@@ -15,6 +16,8 @@ class Canvas extends React.Component {
 
         this.handleClick = this.handleClick.bind(this);
         this.mouseMove = this.mouseMove.bind(this);
+        this.solve = this.solve.bind(this);
+        this.updateBoard = this.updateBoard.bind(this);
     }
 
     componentDidMount() {
@@ -112,6 +115,18 @@ class Canvas extends React.Component {
             this.toolStart = node;
         }
 
+        this.render();
+    }
+
+    solve() {
+
+        var model = new Solver(this.state.nodes, this.state.segments, this.updateBoard);
+        
+        model.start();
+    }
+
+    updateBoard(nodes, segments) {
+        this.setState({ nodes: nodes, segments: segments });
         this.render();
     }
 

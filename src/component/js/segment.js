@@ -13,24 +13,24 @@ class Segment {
 
     draw(ctx) {
         ctx.beginPath();
-        
+
         ctx.strokeStyle = this.color;
-        
+
         ctx.lineWidth = this.width;
         ctx.lineCap = this.cap;
-        
+
         utils.drawLine(ctx, this.a, this.b);
 
         ctx.closePath();
-        
-        if(this.active) {
+
+        if (this.active) {
             ctx.beginPath();
-        
+
             ctx.lineWidth = this.outerWidth;
             ctx.lineCap = this.cap;
-        
+
             utils.drawLine(ctx, this.a, this.b)
-        
+
             ctx.closePath();
         }
     }

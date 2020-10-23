@@ -1,6 +1,5 @@
 import React from 'react';
 import Canvas from './Canvas';
-import Controls from './Controls';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
 import './css/app.css';
@@ -32,17 +31,7 @@ class App extends React.Component {
 
                     {this.state.sideBar && <SideBar />}
 
-                    <div id="home">
-
-                        <div id="canvasContainer">
-                            <Canvas />
-                        </div>
-
-                        <div id="controlContainer">
-                            <Controls />
-                        </div>
-
-                    </div>
+                    <Canvas />
 
                 </div>
 

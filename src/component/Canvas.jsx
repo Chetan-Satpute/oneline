@@ -2,6 +2,7 @@ import React from 'react';
 import Node from './js/node';
 import Segment from './js/segment';
 import * as utils from './js/utils';
+import Controls from './Controls';
 
 class Canvas extends React.Component {
     constructor(props) {
@@ -114,7 +115,6 @@ class Canvas extends React.Component {
         this.render();
     }
 
-
     render() {
 
         // Clear canvas context
@@ -136,12 +136,25 @@ class Canvas extends React.Component {
         if(this.hoverSegment) { this.hoverSegment.draw(this.ctx) }
 
         return (
-            <canvas
-                id="canvas"
-                onMouseMove={this.mouseMove}
-                onClick={this.handleClick}>
-                Canvas not supported.
-            </canvas>
+
+            <div id="home">
+
+                <div id="canvasContainer">
+                    <canvas
+                        id="canvas"
+                        onMouseMove={this.mouseMove}
+                        onClick={this.handleClick}>
+                        Canvas not supported.
+                    </canvas>
+                </div>
+
+                <div id="controlContainer">
+                    <Controls 
+                        solve={this.solve} />
+                </div>
+
+            </div>
+            
         );
     }
 }

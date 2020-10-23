@@ -4,7 +4,13 @@ class Controls extends React.Component {
 
     render() {
         return (
-            <div></div>
+            <div>
+                <button 
+                    type="button"
+                    onClick={this.solve}>
+                    Solve
+                </button>
+            </div>
         );
     }
 }

@@ -9,6 +9,7 @@ class Solver {
         // Backtracking algorithm
 
         
+
     }
 
     flowSegment(segment, node) {
@@ -33,25 +34,21 @@ class Solver {
         var neighbours = [];
 
         this.segments.forEach(segment => {
-            if (segment.a === node) { neighbours.push(segment.b) }
-            else if (segment.b === node) { neighbours.push(segment.a) }
+            if (segment.a === node) { 
+                neighbours.push({
+                    node: segment.b,
+                    segment: segment
+                });
+            }
+            else if (segment.b === node) {
+                neighbours.push({
+                    node: segment.a,
+                    segment: segment
+                }); 
+            }
         });
 
         return neighbours;
-    }
-
-    getSegment(nodeA, nodeB) {
-
-        for (let i = 0; i < this.segments.length; i++) {
-            const segment = this.segments[i];
-
-            if(
-                (segment.a === nodeA && segment.b === nodeB) ||
-                (segment.a === nodeB && segment.b === nodeA)
-            ) { return segment }
-        }
-
-        return false;
     }
 }
 

@@ -19,11 +19,30 @@ class Solver {
         };
 
         segment.active = true;
+        segment.color = "green";
 
         var interval = setInterval(() => {
             segment.flow.percent += 1;
 
             if (segment.flow.percent === 100) { clearInterval(interval) }
+
+            this.render();
+        }, 10);
+    }
+
+    retrieveSegment(segment, node) {
+        segment.flow = {
+            startNode: node,
+            percent: 100
+        }
+
+        segment.active = true;
+        segment.color = "red";
+
+        var interval = setInterval(() => {
+            segment.flow.percent -= 1;
+
+            if(segment.flow.percent === 0) { clearInterval(interval) }
 
             this.render();
         }, 10);

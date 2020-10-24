@@ -6,78 +6,95 @@ class Segment {
         this.b = b;             // Node at which Segment end
         this.width = 10;
         this.outerWidth = this.width + 10;
-        this.color = "rgba(0, 0, 0, 0.2)";
-        this.active = false;
+        this.color = "green";
         this.cap = "round";
+        this.active = false;
 
-        /*
-         *  Flow represents grwth of segment from a node to another
-         *  value of flow can be
-         *      { ab: true } or { ab: false }
-         *  { ab: true } represents segment will start at a and grow upto b    
+        /* Flow 
+         * value of flow can be
+         * { startNode: node, percent: value }
+         * 
+         * flow determines incomplete render of segment node
+         * 
+         * segment start render from 
+         *      this.a if startNode == true
+         *      this.b if startNode == false
+         * 
+         * percent value will determine size of segment to be rendered
+         * 
          */
-        this.flow = false;  
-
+        this.flow = false;
     }
 
     draw(ctx) {
+        
         ctx.beginPath();
-
-        ctx.strokeStyle = this.color;
+        
+        // Draw gray line from node a to b
+        ctx.strokeStyle = "black";
         ctx.lineWidth = this.width;
         ctx.lineCap = this.cap;
 
-        utils.drawLine(ctx, this.a, this.b);
+        ctx.globalAlpha = 0.2;
+        ctx.moveTo(this.a.x, this.a.y);
+        ctx.lineTo(this.b.x, this.b.y);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
 
-        ctx.closePath();
-
-        if(this.flow)
-        {
-            ctx.beginPath();
-
-            var percent = 0;
-
-            if(this.flow.ab) {
-                var interval = setInterval(() => {
-                    
-                    ctx.moveTo(this.a.x, this.a.y);
-                    ctx.lineTo(
-                        this.a.x + ((this.b.x - this.a.x) * (percent / 100)),
-                        this.a.y + ((this.b.y - this.a.y) * (percent / 100))
-                    );
-
-                    percent += 1;
-
-                    if(percent > 100) { clearInterval(interval) }
-
-                }, 1000);
-            } else {
-                var interval = setInterval(() => {
-                    
-                    ctx.moveTo(this.a.x, this.a.y);
-                    ctx.lineTo(
-                        this.a.x + ((this.b.x - this.a.x) * (percent / 100)),
-                        this.a.y + ((this.b.y - this.a.y) * (percent / 100))
-                    );
-
-                    percent += 1;
-
-                    if(percent > 100) { clearInterval(interval) }
-
-                }, 1000);
-            }
-        }
-        
+        // When active render wide segment
         if(this.active) {
             ctx.beginPath();
-        
+            
+            ctx.strokeStyle = this.color;
             ctx.lineWidth = this.outerWidth;
             ctx.lineCap = this.cap;
-        
-            utils.drawLine(ctx, this.a, this.b)
+
+            ctx.globalAlpha = 0.2;
+            ctx.moveTo(this.a.x, this.a.y);
+            ctx.lineTo(this.b.x, this.b.y);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            ctx.closePath();
+        }
+
+        // Render partial segment above base segment
+        if(this.flow) {
+
+            ctx.beginPath();
+
+            // Position at which to end segment
+            var pos;
+
+            if(this.flow.startNode) {
+                pos = {
+                    x: this.a.x + (this.b.x-this.a.x) * (this.flow.percent / 100),
+                    y: this.a.y + (this.b.y-this.a.y) * (this.flow.percent / 100)
+                }
+
+                ctx.moveTo(this.a.x, this.a.y);
+            } else {
+                pos = {
+                    x: this.b.x + (this.a.x-this.b.x) * (this.flow.percent / 100),
+                    y: this.b.y + (this.a.y-this.b.y) * (this.flow.percent / 100)
+                }
+            
+                ctx.moveTo(this.b.x, this.b.y);
+            }
+
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = this.width;
+            ctx.lineCap = this.cap;
+
+            ctx.globalAlpha = 0.9;
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
         
             ctx.closePath();
         }
+        
+        ctx.closePath();
     }
 }
 

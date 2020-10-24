@@ -136,6 +136,9 @@ class Canvas extends React.Component {
         if (this.ctx) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
+        
+        // Render hoverSegment
+        if(this.hoverSegment) { this.hoverSegment.draw(this.ctx) } 
 
         // Render all segments
         this.state.segments.forEach(segment => {
@@ -147,8 +150,6 @@ class Canvas extends React.Component {
             node.draw(this.ctx);
         });
 
-        // Render hoverSegment
-        if(this.hoverSegment) { this.hoverSegment.draw(this.ctx) }
 
         return (
 

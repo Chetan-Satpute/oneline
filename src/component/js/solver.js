@@ -6,10 +6,27 @@ class Solver {
     }
 
     start() {
-        this.segments.color = "green";
-        this.segments[0].flow = { ab: true };
 
-        this.render();
+        // Main Ai code here
+
+    }
+
+    flowSegment(segment)
+    {
+        segment.flow = {
+            startNode: true,
+            percent: 0
+        };
+
+        segment.active = true;
+
+        var interval = setInterval(() => {
+            segment.flow.percent += 1;
+
+            if(segment.flow.percent === 100) { clearInterval(interval) }
+
+            this.render();
+        }, 10);
     }
 }
 

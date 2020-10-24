@@ -16,10 +16,8 @@ class Segment {
          * 
          * flow determines incomplete render of segment node
          * 
-         * segment start render from 
-         *      this.a if startNode == true
-         *      this.b if startNode == false
-         * 
+         * startNode is the node to start rendering from 
+         *
          * percent value will determine size of segment to be rendered
          * 
          */
@@ -66,7 +64,7 @@ class Segment {
             // Position at which to end segment
             var pos;
 
-            if(this.flow.startNode) {
+            if(this.flow.startNode == this.a) {
                 pos = {
                     x: this.a.x + (this.b.x-this.a.x) * (this.flow.percent / 100),
                     y: this.a.y + (this.b.y-this.a.y) * (this.flow.percent / 100)

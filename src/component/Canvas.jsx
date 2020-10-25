@@ -115,7 +115,7 @@ class Canvas extends React.Component {
             this.toolStart = node;
         }
 
-        this.render();
+        this.canvasDraw();
     }
 
     solve() {
@@ -127,11 +127,10 @@ class Canvas extends React.Component {
 
     updateBoard(nodes, segments) {
         this.setState({ nodes: nodes, segments: segments });
-        this.render();
+        this.canvasDraw();
     }
 
-    render() {
-
+    canvasDraw() {
         // Clear canvas context
         if (this.ctx) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -149,7 +148,11 @@ class Canvas extends React.Component {
         this.state.nodes.forEach(node => {
             node.draw(this.ctx);
         });
+    }
 
+    render() {
+
+        this.canvasDraw();
 
         return (
 

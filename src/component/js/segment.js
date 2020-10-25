@@ -62,7 +62,7 @@ class Segment {
             // Position at which to end segment
             var pos;
 
-            if(this.flow.startNode === this.a) {
+            if(this.flow.toNode !== this.a) {
                 pos = {
                     x: this.a.x + (this.b.x-this.a.x) * (this.flow.percent / 100),
                     y: this.a.y + (this.b.y-this.a.y) * (this.flow.percent / 100)

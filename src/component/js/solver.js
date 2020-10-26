@@ -6,29 +6,101 @@ class Solver {
         
         this.stack = [];
         this.explored = new Set();
+        this.sequence = [];
     }
 
     start() {
         // Backtracking algorithm
 
-    }
+        // Start at first node
+        var node = this.nodes[0];
 
-    nextStep() {
+        this.stack = this.neighbours(node);
 
-        if(this.stack.length) {
+        while(this.stack.length) {
+
             var path = this.stack.pop();
             this.explored.add(path.segment);
 
-            this.flow(path.segment, path.node);
+
+            this.makeMove(path);
 
             this.neighbours(path.node).forEach(path => {
-                if (!this.explored.has(path.segment))
-                { this.stack.push(path) }
-            })
+
+                // Path is not already explored
+                if(!this.explored.has(path.segment)) { 
+                    this.stack.push(path);
+                }
+            });
+
+            // If won
+            if(this.won()) {
+                console.log("Won");
+                this.renderPath();
+                return;
+            }
+        }
+
+        this.renderPath();
+
+        console.log("No path possible");
+    }
+
+    makeMove(path) {
+        var startNode;
+
+        if (path.node === path.segment.a) { startNode = path.segment.b }
+        else { startNode = path.segment.a }
+
+        if(this.sequence.length === 0) { 
+            this.sequence.push({
+                path: path,
+                flow: true
+            });
         } else {
-            console.log("not found");
+    
+            for(
+                var i = this.sequence.length-1; 
+                i >= 0 && this.sequence[i].path.node != startNode; 
+                i--
+            ) {
+                console.log(this.sequence);
+
+                // Retrieve segment
+                this.sequence.push({
+                    path: this.sequence[i].path,
+                    flow: false
+                });
+
+                // Removed segment from explored set
+                this.explored.delete(this.sequence[i].path.segment);
+            }
+
+            this.sequence.push({
+                path: path,
+                flow: true
+            });
         }
     }
+
+    renderPath() {
+
+        if(this.sequence.length) {
+            var move = this.sequence.shift();
+
+            console.log(this.sequence);
+            console.log(move);
+
+            if(move.flow) { this.flow(move.path.segment, move.path.node) }
+            else { this.retrieve(move.path.segment, move.path.node) }
+        }
+    }
+
+    won() {
+        if (this.explored.size === this.segments.length) { return true }
+        else { return false }
+    }
+
 
     flow(segment, node) {
         segment.flow = {
@@ -44,7 +116,7 @@ class Solver {
 
             if (segment.flow.percent === 100) { 
                 clearInterval(interval);
-                this.nextStep();
+                this.renderPath();
             }
 
             this.render();
@@ -64,13 +136,14 @@ class Solver {
             segment.flow.percent -= 1;
 
             if(segment.flow.percent === 0) { 
-                clearInterval(interval) 
-                this.nextStep();
+                clearInterval(interval);   
+                this.renderPath();             
             }
 
             this.render();
         }, 10);
     }
+
 
     neighbours(node) {
 

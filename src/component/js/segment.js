@@ -92,6 +92,11 @@ class Segment {
         
         ctx.closePath();
     }
+
+    oppNode(node) {
+        if (this.a === node) { return this.b }
+        else { return this.a }
+    }
 }
 
 export default Segment;

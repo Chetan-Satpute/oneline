@@ -3,101 +3,118 @@ class Solver {
         this.nodes = nodes;
         this.segments = segments;
         this.render = () => { render(this.nodes, this.segments) };
+
+        // Stack of moves
+        this.stack = this.neighbours(this.nodes[0]);
         
-        this.stack = [];
+        // Set of explored segments
         this.explored = new Set();
-        this.sequence = [];
+
+        // Sequence in which moves are performed
+        this.moveSequence = [];
+
+        // Solution for current puzzle
+        this.solution = [];
     }
 
     start() {
-        // Backtracking algorithm
 
-        // Start at first node
-        var node = this.nodes[0];
+        // While stack is not empty
+        while (this.stack.length) {
 
-        this.stack = this.neighbours(node);
+            // Get a move from stack
+            var move = this.stack.pop();        // Pop a move from stack
+            this.explored.add(move.segment);    // Mark segment as explored
 
-        while(this.stack.length) {
+            // Make a move
+            this.moveSequence.push(move);       // Add move to move sequence
+            this.solution.push(move);           // Add move to solution
 
-            var path = this.stack.pop();
-            this.explored.add(path.segment);
+            // Counter of available moves
+            var count = 0;
 
+            // Get all available moves
+            this.neighbours(move.node).forEach(element => {
 
-            this.makeMove(path);
-
-            this.neighbours(path.node).forEach(path => {
-
-                // Path is not already explored
-                if(!this.explored.has(path.segment)) { 
-                    this.stack.push(path);
+                // Add move to stack 
+                // If segment is not already explored
+                if (!this.explored.has(element.segment)) {
+                    this.stack.push(element);
+                    count += 1;
                 }
             });
 
-            // If won
-            if(this.won()) {
-                console.log("Won");
-                this.renderPath();
-                return;
+            // No available move
+            if(!count) {
+                
+                if(this.won()) {
+
+                    console.log("Won!!");
+                    
+                    // Render all moves taken to win
+                    this.renderMove();
+                    return;
+                } else {
+                    
+                    // Retrieve
+                    this.getBack();
+                }
             }
         }
 
-        this.renderPath();
+        // No solution possible
 
-        console.log("No path possible");
+        console.log("No path possible!!");
+
+        // Render all moves
+        this.renderMove();
+
+        // Retrieve to start node
+        // TODO    
+
     }
 
-    makeMove(path) {
-        var startNode;
+    getBack() {
 
-        if (path.node === path.segment.a) { startNode = path.segment.b }
-        else { startNode = path.segment.a }
+        // Non empty stack
+        if (this.stack.length) {
+            
+            // Get last move of stack and its start node
+            var move = this.stack[this.stack.length-1];
+            var startNode = move.segment.oppNode(move.node);
 
-        if(this.sequence.length === 0) { 
-            this.sequence.push({
-                path: path,
-                flow: true
-            });
-        } else {
-    
-            for(
-                var i = this.sequence.length-1; 
-                i >= 0 && this.sequence[i].path.node != startNode; 
-                i--
-            ) {
-                console.log(this.sequence);
+            // Retrieve until solution start node matches that of move
+            while(this.solution.length) {
+                var currMove = this.solution.pop();
+                var currStart = currMove.segment.oppNode(currMove.node);
 
-                // Retrieve segment
-                this.sequence.push({
-                    path: this.sequence[i].path,
-                    flow: false
+                this.moveSequence.push({
+                    node: currMove.node,
+                    segment: currMove.segment,
+                    grow: false
                 });
 
-                // Removed segment from explored set
-                this.explored.delete(this.sequence[i].path.segment);
-            }
+                this.explored.delete(currMove.segment);
 
-            this.sequence.push({
-                path: path,
-                flow: true
-            });
+                if (currStart === startNode) { break }
+            }
         }
     }
 
-    renderPath() {
+    renderMove() {
 
-        if(this.sequence.length) {
-            var move = this.sequence.shift();
+        if (this.moveSequence.length) {
+            var move = this.moveSequence.shift();
 
-            console.log(this.sequence);
-            console.log(move);
-
-            if(move.flow) { this.flow(move.path.segment, move.path.node) }
-            else { this.retrieve(move.path.segment, move.path.node) }
+            if (move.grow) { this.flow(move.segment, move.node) }
+            else { this.retrieve(move.segment, move.node) }
         }
     }
 
     won() {
-        if (this.explored.size === this.segments.length) { return true }
+
+        // Won when all segments are explored
+        if (this.segments.length === this.explored.size) { return true }
         else { return false }
     }
 
@@ -114,9 +131,9 @@ class Solver {
         var interval = setInterval(() => {
             segment.flow.percent += 1;
 
-            if (segment.flow.percent === 100) { 
+            if (segment.flow.percent === 100) {
                 clearInterval(interval);
-                this.renderPath();
+                this.renderMove();
             }
 
             this.render();
@@ -135,9 +152,10 @@ class Solver {
         var interval = setInterval(() => {
             segment.flow.percent -= 1;
 
-            if(segment.flow.percent === 0) { 
-                clearInterval(interval);   
-                this.renderPath();             
+            if (segment.flow.percent === 0) {
+                clearInterval(interval);
+                segment.active = false;
+                this.renderMove();
             }
 
             this.render();
@@ -150,18 +168,20 @@ class Solver {
         var neighbours = [];
 
         this.segments.forEach(segment => {
-            
-            if (segment.a === node) { 
+
+            if (segment.a === node) {
                 neighbours.push({
                     node: segment.b,
-                    segment: segment
+                    segment: segment,
+                    grow: true
                 });
             }
             else if (segment.b === node) {
                 neighbours.push({
                     node: segment.a,
-                    segment: segment
-                }); 
+                    segment: segment,
+                    grow: true
+                });
             }
         });
 

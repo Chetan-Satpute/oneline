@@ -5,7 +5,7 @@ class Solver {
         this.render = () => { render(this.nodes, this.segments) };
 
         // Stack of moves
-        this.stack = this.neighbours(this.nodes[1]);
+        this.stack = this.neighbours(this.nodes[0]);
         
         // Set of explored segments
         this.explored = new Set();
@@ -103,13 +103,35 @@ class Solver {
         }
     }
 
+    renderSolution() {
+        if (this.solution.length) {
+            var move = this.solution.shift();
+            
+            this.flow(move.segment, move.node, this.renderSolution.bind(this));
+        }
+    }
+
     renderMove() {
 
         if (this.moveSequence.length) {
             var move = this.moveSequence.shift();
 
-            if (move.grow) { this.flow(move.segment, move.node) }
-            else { this.retrieve(move.segment, move.node) }
+            if (move.grow) { this.flow(move.segment, move.node, this.renderMove.bind(this)) }
+            else { this.retrieve(move.segment, move.node, this.renderMove.bind(this)) }
+        } else if (this.won()) {
+
+            // Reset and Render Solution
+            this.reset();
+            this.renderSolution();
+        } else {
+            
+            // When No Solution
+            // Render all segments as active red
+            this.segments.forEach(segment => {
+                segment.active = true;
+                segment.flow.percent = 0;
+                segment.color = "red";
+            })
         }
     }
 
@@ -120,7 +142,7 @@ class Solver {
         else { return false }
     }
 
-    flow(segment, node) {
+    flow(segment, node, callBack) {
         segment.flow = {
             toNode: node,
             percent: 0
@@ -134,14 +156,14 @@ class Solver {
 
             if (segment.flow.percent === 100) {
                 clearInterval(interval);
-                this.renderMove();
+                callBack();
             }
 
             this.render();
         }, 10);
     }
 
-    retrieve(segment, node) {
+    retrieve(segment, node, callBack) {
         segment.flow = {
             toNode: node,
             percent: 100
@@ -156,7 +178,7 @@ class Solver {
             if (segment.flow.percent === 0) {
                 clearInterval(interval);
                 segment.active = false;
-                this.renderMove();
+                callBack();
             }
 
             this.render();
@@ -185,6 +207,13 @@ class Solver {
         });
 
         return neighbours;
+    }
+
+    reset() {
+        this.segments.forEach(segment => {
+            segment.flow.percent = 0;
+            segment.active = false;
+        });
     }
 }
 

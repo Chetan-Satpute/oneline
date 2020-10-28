@@ -5,7 +5,7 @@ class Solver {
         this.render = () => { render(this.nodes, this.segments) };
 
         // Stack of moves
-        this.stack = this.neighbours(this.nodes[0]);
+        this.stack = this.neighbours(this.nodes[1]);
         
         // Set of explored segments
         this.explored = new Set();
@@ -63,14 +63,13 @@ class Solver {
         }
 
         // No solution possible
-
         console.log("No path possible!!");
 
         // Render all moves
         this.renderMove();
 
         // Retrieve to start node
-        // TODO    
+        // TODO
 
     }
 
@@ -78,7 +77,7 @@ class Solver {
 
         // Non empty stack
         if (this.stack.length) {
-            
+
             // Get last move of stack and its start node
             var move = this.stack[this.stack.length-1];
             var startNode = move.segment.oppNode(move.node);
@@ -96,7 +95,10 @@ class Solver {
 
                 this.explored.delete(currMove.segment);
 
-                if (currStart === startNode) { break }
+                if (
+                    currStart === startNode &&  
+                    !this.explored.has(move.segment)
+                ) { break }
             }
         }
     }
@@ -117,7 +119,6 @@ class Solver {
         if (this.segments.length === this.explored.size) { return true }
         else { return false }
     }
-
 
     flow(segment, node) {
         segment.flow = {
@@ -162,7 +163,6 @@ class Solver {
         }, 10);
     }
 
-
     neighbours(node) {
 
         var neighbours = [];
@@ -175,8 +175,7 @@ class Solver {
                     segment: segment,
                     grow: true
                 });
-            }
-            else if (segment.b === node) {
+            } else if (segment.b === node) {
                 neighbours.push({
                     node: segment.a,
                     segment: segment,

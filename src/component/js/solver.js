@@ -129,7 +129,7 @@ class Solver {
             // Render all segments as active red
             this.segments.forEach(segment => {
                 segment.active = true;
-                segment.flow.percent = 0;
+                segment.flow.percent = 100;
                 segment.color = "red";
             })
         }

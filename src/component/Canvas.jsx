@@ -167,10 +167,9 @@ class Canvas extends React.Component {
                     </canvas>
                 </div>
 
-                <div id="controlContainer">
-                    <Controls 
-                        solve={this.solve} />
-                </div>
+                <Controls 
+                    solve={this.solve}
+                    edit={true} />
 
             </div>
             

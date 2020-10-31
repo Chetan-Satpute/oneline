@@ -1,0 +1,30 @@
+#controlContainer {
+    background: orange;
+    flex: 0 1 10%;
+    display: flex;
+    flex-direction: column;
+}
+
+#solve {
+    border-radius: 0;
+    width: 100%;
+}
+
+#editButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controlBtn {
+    border-radius: 0;
+    flex: 1 1 auto;
+}
+
+@media only screen and (max-width: 800px) {
+    #controlContainer {
+        height: 20%;
+        flex: 0 1 15%;
+        flex-direction: row;
+    }
+}

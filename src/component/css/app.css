@@ -16,10 +16,6 @@
     align-items: center;
 }
 
-#controlContainer {
-    background: orange;
-    flex: 0 1 10%;
-}
 
 .navbar-toggler-icon {
     display: none;
@@ -36,10 +32,5 @@
 
     #home {
         flex-direction: column;
-    }
-
-    #controlContainer {
-        height: 20%;
-        flex: 0 1 15%;
     }
 }

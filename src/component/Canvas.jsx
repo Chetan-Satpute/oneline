@@ -26,6 +26,7 @@ class Canvas extends React.Component {
         this.updateToolStatus = this.updateToolStatus.bind(this);
         this.mouseDown = this.mouseDown.bind(this);
         this.mouseUp = this.mouseUp.bind(this);
+        this.resetBoard = this.resetBoard.bind(this);
     }
 
     componentDidMount() {
@@ -104,6 +105,7 @@ class Canvas extends React.Component {
         var pos = utils.get_coordinates(this.canvas, event);    // Currnet position
         var node = utils.node_overlap(this.state.nodes, pos);   // node on current position or false
         var nodeList = this.state.nodes;
+        var segmentList = this.state.segments;
 
         // When create tool is active
         if (this.state.toolStatus.create) {
@@ -125,7 +127,6 @@ class Canvas extends React.Component {
                     var segment = new Segment(this.selected, node);
 
                     // Add new segment to state
-                    var segmentList = this.state.segments;
                     segmentList.push(segment);
                     this.setState({ segments: segmentList });
 
@@ -144,6 +145,20 @@ class Canvas extends React.Component {
                 node.active = true;
                 this.selected = node;
             }
+        }
+
+        // When erase tool is active
+        if (this.state.toolStatus.erase) {
+
+            if (node) { 
+                nodeList.splice(nodeList.indexOf(node), 1) 
+            
+                segmentList = segmentList.filter((segment) => {
+                    return ((segment.a != node) && (segment.b != node));
+                });
+            }
+
+            this.setState({ nodes: nodeList, segments: segmentList });
         }
     }
 
@@ -199,6 +214,13 @@ class Canvas extends React.Component {
         this.selected = null;
     }
 
+    resetBoard() {
+        this.setState({ nodes: [], segments: [] });
+        this.selected = null;
+        this.hoverNode = null;
+        this.hoverSegment = null;
+    }
+
     render() {
 
         this.canvasDraw();
@@ -225,6 +247,7 @@ class Canvas extends React.Component {
                     solve={this.solve}
                     status={this.state.toolStatus}
                     updateToolStatus={this.updateToolStatus}
+                    resetBoard={this.resetBoard}
                     edit={true} />
 
             </div>

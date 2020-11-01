@@ -16,10 +16,6 @@ class Controls extends React.Component {
         this.setState({ edit: !this.state.edit });
     }
 
-    updateStatus() {
-
-    }
-
     render() {
         return (
             <div id="controlContainer">
@@ -52,7 +48,8 @@ class Controls extends React.Component {
 
                         <ControlButton
                             title="Reset"
-                            color="danger" />
+                            color="danger"
+                            onClick={this.props.resetBoard} />
 
                     </React.Fragment>        
                     

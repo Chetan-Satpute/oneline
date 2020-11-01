@@ -11,13 +11,19 @@ class Canvas extends React.Component {
 
         this.state = {
             nodes: [],
-            segments: []
+            segments: [],
+            toolStatus: {
+                select: false,
+                create: false,
+                erase: false
+            }
         }
 
         this.handleClick = this.handleClick.bind(this);
         this.mouseMove = this.mouseMove.bind(this);
         this.solve = this.solve.bind(this);
         this.updateBoard = this.updateBoard.bind(this);
+        this.updateToolStatus = this.updateToolStatus.bind(this);
     }
 
     componentDidMount() {
@@ -150,6 +156,19 @@ class Canvas extends React.Component {
         });
     }
 
+    updateToolStatus(tool) {
+        var status = this.state.toolStatus;
+        status = {
+            select: false,
+            create: false,
+            erase: false
+        }
+
+        status[tool] = true;
+
+        this.setState({ toolStatus: status });
+    }
+
     render() {
 
         this.canvasDraw();
@@ -169,6 +188,8 @@ class Canvas extends React.Component {
 
                 <Controls 
                     solve={this.solve}
+                    status={this.state.toolStatus}
+                    updateToolStatus={this.updateToolStatus}
                     edit={true} />
 
             </div>

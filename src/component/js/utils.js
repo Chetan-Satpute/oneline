@@ -3,9 +3,20 @@ export function get_coordinates(canvas, event) {
     var top = Math.ceil(rect.top);
     var left = Math.ceil(rect.left);
 
+    var clientX;
+    var clientY;
+
+    if(event.clientX && event.clientY) {
+        clientX = event.clientX;
+        clientY = event.clientY;
+    } else {
+        clientX = event.targetTouches[0].clientX;
+        clientY = event.targetTouches[0].clientY;
+    }
+
     return {
-        x: event.clientX - left,
-        y: event.clientY - top
+        x: clientX - left,
+        y: clientY - top
     }
 }
 

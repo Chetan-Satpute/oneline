@@ -160,7 +160,7 @@ class Solver {
             }
 
             this.render();
-        }, 10);
+        }, 1);
     }
 
     retrieve(segment, node, callBack) {
@@ -182,7 +182,7 @@ class Solver {
             }
 
             this.render();
-        }, 10);
+        }, 1);
     }
 
     neighbours(node) {

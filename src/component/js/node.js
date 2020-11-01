@@ -33,6 +33,11 @@ class Node {
 
         ctx.closePath();
     }
+
+    moveTo(position) {
+        this.x = position.x;
+        this.y = position.y;
+    }
 }
 
 export default Node;

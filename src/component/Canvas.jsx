@@ -14,7 +14,7 @@ class Canvas extends React.Component {
             segments: [],
             toolStatus: {
                 select: false,
-                create: false,
+                create: true,
                 erase: false
             }
         }
@@ -24,10 +24,13 @@ class Canvas extends React.Component {
         this.solve = this.solve.bind(this);
         this.updateBoard = this.updateBoard.bind(this);
         this.updateToolStatus = this.updateToolStatus.bind(this);
+        this.mouseDown = this.mouseDown.bind(this);
+        this.mouseUp = this.mouseUp.bind(this);
     }
 
     componentDidMount() {
 
+        // Get canvas and ctx
         this.canvas = document.getElementById('canvas');
         this.ctx = this.canvas.getContext('2d');
 
@@ -42,7 +45,6 @@ class Canvas extends React.Component {
 
         // Normalise coordinate system to use css pixels.
         this.ctx.scale(scale, scale);
-
     }
 
     mouseMove(event) {
@@ -51,26 +53,50 @@ class Canvas extends React.Component {
         var node = utils.node_overlap(this.state.nodes, pos);
         var nodeList = this.state.nodes;
 
-        // When tool Active show a segment that follow cursor
-        if(!node) { node = new Node(pos) }
-        if(this.toolStart) { this.hoverSegment = new Segment(this.toolStart, node) }
+        // When select tool is active
+        if (this.state.toolStatus.select) {
 
-        // Inactivate previous hover node except start node
-        if (this.hoverNode && this.hoverNode !== this.toolStart) {
-            nodeList[nodeList.indexOf(this.hoverNode)].active = false;
+            if (node && this.drag) {
+
+                this.selected = node;
+                this.selected.active = true;
+                this.selected.moveTo(pos);
+
+                nodeList[nodeList.indexOf(node)] = this.selected;
+
+            } else if (this.selected) {
+
+                this.selected.active = false;
+                nodeList[nodeList.indexOf(this.selected)].active = false;
+            }
+
+            this.setState({ nodes: nodeList });
         }
 
-        // If cursor on node other than start node
-        // Activate node
-        if (node && node !== this.toolStart) {
-            this.hoverNode = node;
-            this.hoverNode.active = true;
+        // When create tool is active
+        if (this.state.toolStatus.create) {
 
-            // Update State
-            nodeList[nodeList.indexOf(node)] = this.hoverNode;
+            // When tool Active show a segment that follow cursor
+            if (!node) { node = new Node(pos) }
+            if (this.selected) { this.hoverSegment = new Segment(this.selected, node) }
+
+            // Inactivate previous hover node except start node
+            if (this.hoverNode && this.hoverNode !== this.selected) {
+                nodeList[nodeList.indexOf(this.hoverNode)].active = false;
+            }
+
+            // If cursor on node other than start node
+            // Activate node
+            if (node && node !== this.selected) {
+                this.hoverNode = node;
+                this.hoverNode.active = true;
+
+                // Update State
+                nodeList[nodeList.indexOf(node)] = this.hoverNode;
+            }
+
+            this.setState({ nodes: nodeList });
         }
-
-        this.setState({ nodes: nodeList });
     }
 
     handleClick(event) {
@@ -79,55 +105,56 @@ class Canvas extends React.Component {
         var node = utils.node_overlap(this.state.nodes, pos);   // node on current position or false
         var nodeList = this.state.nodes;
 
-        // Create a new node on current position
-        if (!node) {
+        // When create tool is active
+        if (this.state.toolStatus.create) {
 
-            node = new Node(pos);
+            // Create a new node at current position
+            // If it does not exist already
+            if (!node) {
+                node = new Node(pos);
 
-            // Add new node in list of existing nodes 
-            nodeList.push(node);
-            this.setState({ nodes: nodeList });
-        }
-
-        if (this.tool) {
-            // When tool is active
-
-            // End node and start node are different
-            if (node !== this.toolStart) {
-
-                var segment = new Segment(this.toolStart, node);
-
-                // Add new segment to state
-                var segmentList = this.state.segments;
-                segmentList.push(segment);
-                this.setState({ segments: segmentList });
-
-                // Inactive end nodes of segment
-                nodeList[nodeList.indexOf(this.toolStart)].active = false;
-                nodeList[nodeList.indexOf(node)].active = false;
+                // Add new node in linst of existing nodes
+                nodeList.push(node);
                 this.setState({ nodes: nodeList });
             }
 
-            // Reset tool
-            this.tool = false;
-            this.toolStart = null;
-            this.hoverSegment = null;
+            if (this.selected) {
 
-        } else {
-            // When tool is inactive
+                // Start node and end node of segment being created must be different
+                if (this.selected != node) {
+                    var segment = new Segment(this.selected, node);
 
-            node.active = true;
-            this.tool = true;
-            this.toolStart = node;
+                    // Add new segment to state
+                    var segmentList = this.state.segments;
+                    segmentList.push(segment);
+                    this.setState({ segments: segmentList });
+
+                    // Inactive both end nodes of segment
+                    nodeList[nodeList.indexOf(this.selected)].active = false;
+                    nodeList[nodeList.indexOf(node)].active = false;
+                    this.setState({ nodes: nodeList });
+                }
+
+                // Reset tool
+                this.selected = null;
+                this.hoverSegment = null;
+            } else {
+
+                // Start creating segment at current node
+                node.active = true;
+                this.selected = node;
+            }
         }
-
-        this.canvasDraw();
     }
+
+    mouseDown(e) { this.drag = true }
+    
+    mouseUp(e) { this.drag = false }
 
     solve() {
 
         var model = new Solver(this.state.nodes, this.state.segments, this.updateBoard);
-        
+
         model.start();
     }
 
@@ -141,9 +168,9 @@ class Canvas extends React.Component {
         if (this.ctx) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
-        
+
         // Render hoverSegment
-        if(this.hoverSegment) { this.hoverSegment.draw(this.ctx) } 
+        if (this.hoverSegment) { this.hoverSegment.draw(this.ctx) }
 
         // Render all segments
         this.state.segments.forEach(segment => {
@@ -167,6 +194,9 @@ class Canvas extends React.Component {
         status[tool] = true;
 
         this.setState({ toolStatus: status });
+
+        // Reset all tools
+        this.selected = null;
     }
 
     render() {
@@ -181,19 +211,23 @@ class Canvas extends React.Component {
                     <canvas
                         id="canvas"
                         onMouseMove={this.mouseMove}
-                        onClick={this.handleClick}>
+                        onClick={this.handleClick}
+                        onMouseDown={this.mouseDown}
+                        onMouseUp={this.mouseUp}
+                        onTouchMove={this.mouseMove}
+                        onTouchStart={this.mouseDown}
+                        onTouchEnd={this.mouseUp} >
                         Canvas not supported.
                     </canvas>
                 </div>
 
-                <Controls 
+                <Controls
                     solve={this.solve}
                     status={this.state.toolStatus}
                     updateToolStatus={this.updateToolStatus}
                     edit={true} />
 
             </div>
-            
         );
     }
 }

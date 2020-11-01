@@ -123,7 +123,7 @@ class Canvas extends React.Component {
             if (this.selected) {
 
                 // Start node and end node of segment being created must be different
-                if (this.selected != node) {
+                if (this.selected !== node) {
                     var segment = new Segment(this.selected, node);
 
                     // Add new segment to state
@@ -154,7 +154,7 @@ class Canvas extends React.Component {
                 nodeList.splice(nodeList.indexOf(node), 1) 
             
                 segmentList = segmentList.filter((segment) => {
-                    return ((segment.a != node) && (segment.b != node));
+                    return ((segment.a !== node) && (segment.b !== node));
                 });
             }
 

@@ -34,7 +34,19 @@ class Solver {
             var count = 0;
 
             // Get all available moves
-            this.neighbours(move.node).forEach(element => {
+            // this.neighbours(move.node).forEach(element => {
+
+            //     // Add move to stack 
+            //     // If segment is not already explored
+            //     if (!this.explored.has(element.segment)) {
+            //         this.stack.push(element);
+            //         count += 1;
+            //     }
+            // });
+
+            var neighbours = this.neighbours(move.node);
+            for(var i = 0; i < neighbours.length; i++) {
+                var element = neighbours[i];
 
                 // Add move to stack 
                 // If segment is not already explored
@@ -42,7 +54,7 @@ class Solver {
                     this.stack.push(element);
                     count += 1;
                 }
-            });
+            }
 
             // No available move
             if(!count) {

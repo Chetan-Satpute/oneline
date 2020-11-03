@@ -21,6 +21,18 @@
     flex: 1 1 auto;
 }
 
+/* Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+
+/* Black peeking out */
+/* Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+
+/* Black blue cursor */
+/* Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+
+.controlIcons {
+    width: 100%;
+}
+
 @media only screen and (max-width: 800px) {
     #controlContainer {
         height: 20%;

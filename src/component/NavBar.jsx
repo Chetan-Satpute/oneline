@@ -10,7 +10,7 @@ function NavBar(props) {
                 type="button"
                 onClick={props.toggleSidebar} />
 
-            <span className="navbar-brand">One Line</span>
+            <span className="navbar-brand"><b>One Line</b></span>
                 
         </nav>
     );

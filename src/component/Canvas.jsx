@@ -18,15 +18,17 @@ class Canvas extends React.Component {
                 erase: false
             }
         }
-
-        this.handleClick = this.handleClick.bind(this);
-        this.mouseMove = this.mouseMove.bind(this);
-        this.solve = this.solve.bind(this);
+        
         this.updateBoard = this.updateBoard.bind(this);
-        this.updateToolStatus = this.updateToolStatus.bind(this);
-        this.mouseDown = this.mouseDown.bind(this);
-        this.mouseUp = this.mouseUp.bind(this);
         this.resetBoard = this.resetBoard.bind(this);
+        this.updateToolStatus = this.updateToolStatus.bind(this);
+        
+        this.mouseDown = this.mouseDown.bind(this);
+        this.mouseMove = this.mouseMove.bind(this);
+        this.mouseUp = this.mouseUp.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        
+        this.solve = this.solve.bind(this);
     }
 
     componentDidMount() {
@@ -104,6 +106,7 @@ class Canvas extends React.Component {
 
         var pos = utils.get_coordinates(this.canvas, event);    // Currnet position
         var node = utils.node_overlap(this.state.nodes, pos);   // node on current position or false
+        
         var nodeList = this.state.nodes;
         var segmentList = this.state.segments;
 

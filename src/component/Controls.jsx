@@ -17,6 +17,10 @@ class Controls extends React.Component {
     }
 
     render() {
+
+        var eraser = require('./images/eraser.svg');
+        var select = require('./images/cursor.svg');
+
         return (
             <div id="controlContainer">
 
@@ -29,10 +33,14 @@ class Controls extends React.Component {
                     ? <React.Fragment>
 
                         <ControlButton
-                            title="Select"
                             color="dark" 
                             active={this.props.status.select}
-                            onClick={() => { this.props.updateToolStatus('select') }} />
+                            onClick={() => { this.props.updateToolStatus('select') }}>
+                            <img 
+                                className="controlIcons" 
+                                src={select}
+                                alt="Select" />
+                        </ControlButton>
                         
                         <ControlButton
                             title="Create"
@@ -41,10 +49,14 @@ class Controls extends React.Component {
                             onClick={() => { this.props.updateToolStatus('create') }} />
 
                         <ControlButton
-                            title="Erase"
                             color="dark"
                             active={this.props.status.erase}
-                            onClick={() => { this.props.updateToolStatus('erase') }} />
+                            onClick={() => { this.props.updateToolStatus('erase') }}>
+                            <img 
+                                className="controlIcons" 
+                                src={eraser}
+                                alt="Erase" />
+                        </ControlButton>
 
                         <ControlButton
                             title="Reset"
@@ -85,7 +97,8 @@ function ControlButton(props) {
             type="button"
             className={`btn btn-${props.color} controlBtn ${props.active ? "active":""}`}
             onClick={props.onClick} >
-            {props.title}
+            {props.title && props.title}
+            {props.children}
         </button>
     );
 }

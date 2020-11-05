@@ -6,19 +6,12 @@
 #home {
     flex: 1 1 auto;
     display: flex;
+    flex-direction: row;
 }
 
 #canvasContainer {
-    background:#50A;
     flex: 1 1 auto;
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-.navbar-toggler-icon {
-    display: none;
 }
 
 @media only screen and (max-width: 800px) {

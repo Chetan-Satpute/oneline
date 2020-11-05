@@ -12,11 +12,7 @@ class Canvas extends React.Component {
         this.state = {
             nodes: [],
             segments: [],
-            toolStatus: {
-                select: false,
-                create: true,
-                erase: false
-            }
+            toolStatus: true
         }
         
         this.updateBoard = this.updateBoard.bind(this);
@@ -56,48 +52,36 @@ class Canvas extends React.Component {
         var node = utils.node_overlap(this.state.nodes, pos);
         var nodeList = this.state.nodes;
 
-        // When select tool is active
-        if (this.state.toolStatus.select) {
-
-            if (node && this.drag) {
-
-                this.selected = node;
-                this.selected.active = true;
-                this.selected.moveTo(pos);
-
-                nodeList[nodeList.indexOf(node)] = this.selected;
-
-            } else if (this.selected) {
-
-                this.selected.active = false;
-                nodeList[nodeList.indexOf(this.selected)].active = false;
-            }
-
-            this.setState({ nodes: nodeList });
-        }
-
         // When create tool is active
-        if (this.state.toolStatus.create) {
+        if (this.state.toolStatus) {
 
-            // When tool Active show a segment that follow cursor
-            if (!node) { node = new Node(pos) }
-            if (this.selected) { this.hoverSegment = new Segment(this.selected, node) }
+            if (this.drag) {
 
-            // Inactivate previous hover node except start node
-            if (this.hoverNode && this.hoverNode !== this.selected) {
-                nodeList[nodeList.indexOf(this.hoverNode)].active = false;
+                nodeList[nodeList.indexOf(this.drag)].moveTo(pos);
+                
+            } else {
+            
+                // When tool Active show a segment that follow cursor
+                if (!node) { node = new Node(pos) }
+                if (this.selected) { this.hoverSegment = new Segment(this.selected, node) }
+
+                // Inactivate previous hover node except start node
+                if (this.hoverNode && this.hoverNode !== this.selected) {
+                    nodeList[nodeList.indexOf(this.hoverNode)].active = false;
+                }
+
+                // If cursor on node other than start node
+                // Activate node
+                if (node && node !== this.selected) {
+                    this.hoverNode = node;
+                    this.hoverNode.active = true;
+
+                    // Update State
+                    nodeList[nodeList.indexOf(node)] = this.hoverNode;
+                }
+
             }
-
-            // If cursor on node other than start node
-            // Activate node
-            if (node && node !== this.selected) {
-                this.hoverNode = node;
-                this.hoverNode.active = true;
-
-                // Update State
-                nodeList[nodeList.indexOf(node)] = this.hoverNode;
-            }
-
+            
             this.setState({ nodes: nodeList });
         }
     }
@@ -111,7 +95,7 @@ class Canvas extends React.Component {
         var segmentList = this.state.segments;
 
         // When create tool is active
-        if (this.state.toolStatus.create) {
+        if (this.state.toolStatus) {
 
             // Create a new node at current position
             // If it does not exist already
@@ -148,11 +132,9 @@ class Canvas extends React.Component {
                 node.active = true;
                 this.selected = node;
             }
-        }
+        } else {
 
-        // When erase tool is active
-        if (this.state.toolStatus.erase) {
-
+            // When erase tool is active
             if (node) { 
                 nodeList.splice(nodeList.indexOf(node), 1) 
             
@@ -165,7 +147,12 @@ class Canvas extends React.Component {
         }
     }
 
-    mouseDown(e) { this.drag = true }
+    mouseDown(event) { 
+        var pos = utils.get_coordinates(this.canvas, event);    // Currnet position
+        var node = utils.node_overlap(this.state.nodes, pos);   // node on current position or false
+
+        if (node) { this.drag = node }
+    }
     
     mouseUp(e) { this.drag = false }
 
@@ -201,20 +188,8 @@ class Canvas extends React.Component {
         });
     }
 
-    updateToolStatus(tool) {
-        var status = this.state.toolStatus;
-        status = {
-            select: false,
-            create: false,
-            erase: false
-        }
-
-        status[tool] = true;
-
+    updateToolStatus(status) {
         this.setState({ toolStatus: status });
-
-        // Reset all tools
-        this.selected = null;
     }
 
     resetBoard() {

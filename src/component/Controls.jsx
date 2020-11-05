@@ -18,8 +18,8 @@ class Controls extends React.Component {
 
     render() {
 
-        var eraser = require('./images/eraser.svg');
-        var select = require('./images/cursor.svg');
+        var erase = require('./images/eraser.svg');
+        var create = require('./images/cursor.svg');
 
         return (
             <div id="controlContainer">
@@ -34,27 +34,21 @@ class Controls extends React.Component {
 
                         <ControlButton
                             color="dark" 
-                            active={this.props.status.select}
-                            onClick={() => { this.props.updateToolStatus('select') }}>
+                            active={this.props.status}
+                            onClick={() => { this.props.updateToolStatus(true) }} >
                             <img 
                                 className="controlIcons" 
-                                src={select}
-                                alt="Select" />
+                                src={create}
+                                alt="Create" />
                         </ControlButton>
                         
                         <ControlButton
-                            title="Create"
-                            color="dark" 
-                            active={this.props.status.create}
-                            onClick={() => { this.props.updateToolStatus('create') }} />
-
-                        <ControlButton
                             color="dark"
-                            active={this.props.status.erase}
-                            onClick={() => { this.props.updateToolStatus('erase') }}>
+                            active={!this.props.status}
+                            onClick={() => { this.props.updateToolStatus(false) }} >
                             <img 
                                 className="controlIcons" 
-                                src={eraser}
+                                src={erase}
                                 alt="Erase" />
                         </ControlButton>
 

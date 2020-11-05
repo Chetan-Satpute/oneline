@@ -1,13 +1,15 @@
+/* Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+
+/* Black peeking out */
+/* Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+
+/* Black blue cursor */
+/* Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+
 #controlContainer {
-    background: orange;
-    flex: 0 1 10%;
+    flex: 0 0 10%;
     display: flex;
     flex-direction: column;
-}
-
-#solve {
-    border-radius: 0;
-    width: 100%;
 }
 
 #editButton {
@@ -17,20 +19,12 @@
 }
 
 .controlBtn {
-    border-radius: 0;
+    border-radius: 0px;
     flex: 1 1 auto;
 }
 
-/* Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
-
-/* Black peeking out */
-/* Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
-
-/* Black blue cursor */
-/* Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
-
 .controlIcons {
-    width: 100%;
+    width: 50%;
 }
 
 @media only screen and (max-width: 800px) {

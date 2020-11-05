@@ -81,8 +81,8 @@ function EditButton(props) {
             id="editButton"
             className={window.innerWidth <= 800 ? "dropright" : ""}>
             <button
+                id="editButton"
                 type="button"
-                style={{ height: "100%" }}
                 className="btn btn-secondary controlBtn dropdown-toggle"
                 onClick={props.switchEdit} >
                 <b>Edit</b>

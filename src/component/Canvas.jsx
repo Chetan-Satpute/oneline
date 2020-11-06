@@ -88,7 +88,7 @@ class Canvas extends React.Component {
 
     handleClick(event) {
 
-        var pos = utils.get_coordinates(this.canvas, event);    // Currnet position
+        var pos = utils.get_coordinates(this.canvas, event);    // Current position
         var node = utils.node_overlap(this.state.nodes, pos);   // node on current position or false
         
         var nodeList = this.state.nodes;
@@ -102,7 +102,7 @@ class Canvas extends React.Component {
             if (!node) {
                 node = new Node(pos);
 
-                // Add new node in linst of existing nodes
+                // Add new node in list of existing nodes
                 nodeList.push(node);
                 this.setState({ nodes: nodeList });
             }
@@ -113,9 +113,12 @@ class Canvas extends React.Component {
                 if (this.selected !== node) {
                     var segment = new Segment(this.selected, node);
 
-                    // Add new segment to state
-                    segmentList.push(segment);
-                    this.setState({ segments: segmentList });
+                    if (!utils.checkSegment(segmentList, segment)) {
+
+                        // Add new segment to state
+                        segmentList.push(segment);
+                        this.setState({ segments: segmentList });
+                    }
 
                     // Inactive both end nodes of segment
                     nodeList[nodeList.indexOf(this.selected)].active = false;

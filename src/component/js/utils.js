@@ -1,3 +1,5 @@
+import Segment from "./segment";
+
 export function get_coordinates(canvas, event) {
     var rect = canvas.getBoundingClientRect();
     var top = Math.ceil(rect.top);
@@ -38,4 +40,19 @@ export function drawLine(ctx, a, b) {
     ctx.moveTo(a.x, a.y);
     ctx.lineTo(b.x, b.y);
     ctx.stroke();
+}
+
+export function checkSegment(segments, segment) {
+
+    var found = false;
+
+    segments.forEach(seg => {
+        
+        if (
+            (seg.a === segment.a && seg.b === segment.b) ||
+            (seg.a === segment.b && seg.b === segment.a)
+        ) { found = true }
+    });
+
+    return found;
 }

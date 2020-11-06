@@ -5,11 +5,12 @@ function NavBar(props) {
         <nav className="navbar navbar-light bg-light">
 
             {/* Button to toggle side bar only on mobile devices */}
-            <button 
-                className="navbar-toggler-icon btn" 
-                type="button"
-                onClick={props.toggleSidebar} />
-
+            {window.innerWidth <= 800 && 
+                <button 
+                    className="navbar-toggler-icon btn" 
+                    type="button"
+                    onClick={props.toggleSidebar} /> }
+            
             <span className="navbar-brand"><b>One Line</b></span>
                 
         </nav>

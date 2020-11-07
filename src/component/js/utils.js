@@ -1,5 +1,3 @@
-import Segment from "./segment";
-
 export function get_coordinates(canvas, event) {
     var rect = canvas.getBoundingClientRect();
     var top = Math.ceil(rect.top);

@@ -23,6 +23,7 @@ class Canvas extends React.Component {
         this.mouseMove = this.mouseMove.bind(this);
         this.mouseUp = this.mouseUp.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleMove = this.handleMove.bind(this);
         
         this.solve = this.solve.bind(this);
     }
@@ -47,6 +48,16 @@ class Canvas extends React.Component {
     }
 
     mouseMove(event) {
+
+        // When tool is active and node is dragged
+        if (this.state.toolStatus && this.drag) {
+            this.moved = true;
+        }
+
+        this.handleMove(event);
+    }
+
+    handleMove(event) {
 
         var pos = utils.get_coordinates(this.canvas, event);
         var node = utils.node_overlap(this.state.nodes, pos);
@@ -93,6 +104,27 @@ class Canvas extends React.Component {
         
         var nodeList = this.state.nodes;
         var segmentList = this.state.segments;
+
+        /*
+         * When a node is draged following events are fired
+         *      1. mouseDown
+         *      2. mouseMove
+         *      3. mouseUp
+         *      4. click
+         * 
+         * Click event starts creation of a new segment
+         * moved flag is a work around to prevent 
+         * click event to start a new segment creation
+         * 
+         * On touch drag click is not fired at last
+         * hence, first click just after drag will be ineffective
+         * 
+         * ********* Find better implementation **************
+         */
+        if (this.moved) {
+            this.moved = false;
+            return;
+        }
 
         // When create tool is active
         if (this.state.toolStatus) {
@@ -151,18 +183,18 @@ class Canvas extends React.Component {
     }
 
     mouseDown(event) { 
+
         var pos = utils.get_coordinates(this.canvas, event);    // Currnet position
         var node = utils.node_overlap(this.state.nodes, pos);   // node on current position or false
 
         if (node) { this.drag = node }
     }
-    
+
     mouseUp(e) { this.drag = false }
 
     solve() {
 
         var model = new Solver(this.state.nodes, this.state.segments, this.updateBoard);
-
         model.start();
     }
 
@@ -217,7 +249,7 @@ class Canvas extends React.Component {
                         onClick={this.handleClick}
                         onMouseDown={this.mouseDown}
                         onMouseUp={this.mouseUp}
-                        onTouchMove={this.mouseMove}
+                        onTouchMove={this.handleMove}
                         onTouchStart={this.mouseDown}
                         onTouchEnd={this.mouseUp} >
                         Canvas not supported.

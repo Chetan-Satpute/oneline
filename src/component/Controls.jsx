@@ -13,6 +13,9 @@ class Controls extends React.Component {
     }
 
     switchEdit() {
+
+        if (this.state.edit) { this.props.updateToolStatus('select') }
+        else { this.props.updateToolStatus('create') }
         this.setState({ edit: !this.state.edit });
     }
 
@@ -34,18 +37,18 @@ class Controls extends React.Component {
 
                         <ControlButton
                             color="dark" 
-                            active={this.props.status}
-                            onClick={() => { this.props.updateToolStatus(true) }} >
+                            active={this.props.tool.create}
+                            onClick={() => { this.props.updateToolStatus('create') }} >
                             <img 
                                 className="controlIcons" 
                                 src={create}
                                 alt="Create" />
                         </ControlButton>
-                        
+
                         <ControlButton
                             color="dark"
-                            active={!this.props.status}
-                            onClick={() => { this.props.updateToolStatus(false) }} >
+                            active={this.props.tool.erase}
+                            onClick={() => { this.props.updateToolStatus('erase') }} >
                             <img 
                                 className="controlIcons" 
                                 src={erase}
@@ -57,8 +60,8 @@ class Controls extends React.Component {
                             color="danger"
                             onClick={this.props.resetBoard} />
 
-                    </React.Fragment>        
-                    
+                    </React.Fragment>
+
                     : <ControlButton
                         title="Solve"
                         color="success"

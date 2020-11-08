@@ -72,9 +72,21 @@ class Canvas extends React.Component {
         var nodeList = this.state.nodes;
 
         if (this.drag) {
-
             nodeList[nodeList.indexOf(this.drag)].moveTo(pos);
-            
+        }
+
+        // Inactivate previous hover node
+        // But not selected node
+        if (this.hoverNode && this.hoverNode != this.selected) {
+            nodeList[nodeList.indexOf(this.hoverNode)].active = false;
+        }
+
+        if (node) {
+
+            // Activate current node
+            node.active = true;
+            this.hoverNode = node;
+            nodeList[nodeList.indexOf(node)] = node;
         }
 
         // When create tool is active
@@ -83,21 +95,6 @@ class Canvas extends React.Component {
             // When tool Active show a segment that follow cursor
             if (!node) { node = new Node(pos) }
             if (this.selected) { this.hoverSegment = new Segment(this.selected, node) }
-
-            // Inactivate previous hover node except start node
-            if (this.hoverNode && this.hoverNode !== this.selected) {
-                nodeList[nodeList.indexOf(this.hoverNode)].active = false;
-            }
-
-            // If cursor on node other than start node
-            // Activate node
-            if (node && node !== this.selected) {
-                this.hoverNode = node;
-                this.hoverNode.active = true;
-
-                // Update State
-                nodeList[nodeList.indexOf(node)] = this.hoverNode;
-            }
         }
 
         this.setState({ nodes: nodeList });

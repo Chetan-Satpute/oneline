@@ -27,8 +27,9 @@ class Controls extends React.Component {
         return (
             <div id="controlContainer">
 
-                <EditButton
-                    switchEdit={this.switchEdit} />
+                {this.props.edit &&
+                    <EditButton
+                        switchEdit={this.switchEdit} /> }
                 
                 {/* Render Solve button when not editing */}
                 { this.state.edit 

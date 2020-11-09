@@ -1,11 +1,14 @@
 class Solver {
-    constructor(nodes, segments, render) {
+    constructor(nodes, segments, render, startNode) {
         this.nodes = nodes;
         this.segments = segments;
         this.render = () => { render(this.nodes, this.segments) };
 
+        // Start Node
+        this.startNode = startNode;
+
         // Stack of moves
-        this.stack = this.neighbours(this.nodes[0]);
+        this.stack = this.neighbours(this.startNode);
         
         // Set of explored segments
         this.explored = new Set();

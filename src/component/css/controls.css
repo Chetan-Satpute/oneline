@@ -6,6 +6,15 @@
 /* Black blue cursor */
 /* Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
 
+/* Upload icon */
+/* Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+
+/* Play icon */
+/* Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+
+/* Stop sign */
+/* Icons made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */
+
 #controlContainer {
     flex: 0 0 10%;
     display: flex;
@@ -15,7 +24,7 @@
 #editButton {
     flex: 0 0 5%;
     width: 100%;
-    height: 100%;
+    height: 100%; 
 }
 
 .controlBtn {
@@ -29,7 +38,6 @@
 
 @media only screen and (max-width: 800px) {
     #controlContainer {
-        height: 20%;
         flex: 0 1 15%;
         flex-direction: row;
     }

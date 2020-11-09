@@ -14,12 +14,14 @@ class Canvas extends React.Component {
             segments: [],
             toolStatus: true,
 
+            startNode: null,
+
             tool: {
-                'create': true,
+                'create': false,
                 'erase': false,
 
                 // when not in edit mode
-                'select': false
+                'select': true
             }
         }
         
@@ -77,7 +79,7 @@ class Canvas extends React.Component {
 
         // Inactivate previous hover node
         // But not selected node
-        if (this.hoverNode && this.hoverNode != this.selected) {
+        if (this.hoverNode && this.hoverNode !== this.selected) {
             nodeList[nodeList.indexOf(this.hoverNode)].active = false;
         }
 
@@ -127,6 +129,26 @@ class Canvas extends React.Component {
         if (this.moved) {
             this.moved = false;
             return;
+        }
+
+        if (this.state.tool.select) {
+            
+            var nodeList = this.state.nodes;
+            var sNode = this.state.startNode;
+
+            if (sNode && node) {
+                nodeList[nodeList.indexOf(sNode)].startNode = false;
+            }
+
+            if (node) {
+                sNode = node;
+                nodeList[nodeList.indexOf(sNode)].startNode = true;
+            }
+
+            this.setState({ 
+                nodes: nodeList, 
+                startNode: sNode
+            });
         }
 
         // When create tool is active
@@ -181,6 +203,8 @@ class Canvas extends React.Component {
                 segmentList = segmentList.filter((segment) => {
                     return ((segment.a !== node) && (segment.b !== node));
                 });
+
+                this.hoverNode = null;
             }
 
             this.setState({ nodes: nodeList, segments: segmentList });
@@ -199,8 +223,18 @@ class Canvas extends React.Component {
 
     solve() {
 
-        var model = new Solver(this.state.nodes, this.state.segments, this.updateBoard);
-        model.start();
+        if (!this.state.startNode) {
+            alert("Select a node to start solving!");
+        } else {
+            
+            var model = new Solver(
+                this.state.nodes, 
+                this.state.segments, 
+                this.updateBoard,
+                this.state.startNode
+            );
+            model.start();
+        }
     }
 
     updateBoard(nodes, segments) {
@@ -238,6 +272,16 @@ class Canvas extends React.Component {
             'select': false
         }
 
+        if (this.state.startNode) {
+
+            let nodeList = this.state.nodes;
+            nodeList[nodeList.indexOf(this.state.startNode)].startNode = false;
+
+            this.setState({ 
+                nodes: nodeList,
+                startNode: null 
+            });
+        }
         toolStatus[tool] = true;
 
         this.setState({ tool: toolStatus });

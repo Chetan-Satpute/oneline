@@ -1,234 +1,209 @@
-class Solver {
+class Solver{
     constructor(nodes, segments, render, startNode) {
+
+        // Pattern
         this.nodes = nodes;
         this.segments = segments;
+        
+        // Render current state
         this.render = () => { render(this.nodes, this.segments) };
-
-        // Start Node
+        
+        // Node from which to start solving
         this.startNode = startNode;
 
         // Stack of moves
-        this.stack = this.neighbours(this.startNode);
-        
+        this.stack = [];
+
         // Set of explored segments
         this.explored = new Set();
 
-        // Sequence in which moves are performed
-        this.moveSequence = [];
+        // Moves made to solve the pattern
+        this.moves = [];
 
-        // Solution for current puzzle
+        // Soution of pattern
         this.solution = [];
     }
 
     start() {
+        /**
+         * Solve pattern starting from startNode
+         * 
+         * Prepare moves (List of moves taken)
+         * Prepare solution (Solution of pattern)
+         */
 
-        // While stack is not empty
-        while (this.stack.length) {
+        // Stack has all possible moves from first node
+        this.stack = this.availableMoves(this.startNode);
 
-            // Get a move from stack
-            var move = this.stack.pop();        // Pop a move from stack
-            this.explored.add(move.segment);    // Mark segment as explored
+        while(this.stack.length) {
 
             // Make a move
-            this.moveSequence.push(move);       // Add move to move sequence
-            this.solution.push(move);           // Add move to solution
+            var move = this.stack.pop();
+            this.explored.add(move.segment);
 
-            // Counter of available moves
-            var count = 0;
+            this.moves.push(move);
+            this.solution.push(move);
 
-            // Get all available moves
-            // this.neighbours(move.node).forEach(element => {
-
-            //     // Add move to stack 
-            //     // If segment is not already explored
-            //     if (!this.explored.has(element.segment)) {
-            //         this.stack.push(element);
-            //         count += 1;
-            //     }
-            // });
-
-            var neighbours = this.neighbours(move.node);
-            for(var i = 0; i < neighbours.length; i++) {
-                var element = neighbours[i];
-
-                // Add move to stack 
-                // If segment is not already explored
-                if (!this.explored.has(element.segment)) {
-                    this.stack.push(element);
-                    count += 1;
-                }
-            }
-
-            // No available move
-            if(!count) {
+            var availMoves = this.availableMoves(move.end)
+            
+            if (availMoves.length) {
+                availMoves.forEach(move => this.stack.push(move));
+            } else if (this.won()) {
                 
-                if(this.won()) {
-
-                    console.log("Won!!");
-                    
-                    // Render all moves taken to win
-                    this.renderMove();
-                    return;
-                } else {
-                    
-                    // Retrieve
-                    this.getBack();
-                }
+                console.log("Won!");
+                break;
+            } else {
+                
+                // Retrieve
+                this.retrieve();
             }
         }
 
-        // No solution possible
-        console.log("No path possible!!");
-
-        // Render all moves
-        this.renderMove();
-
-        // Retrieve to start node
-        // TODO
-
+        // Render moves
+        this.renderMoves();
     }
 
-    getBack() {
+    stop() {
+        /**
+         * Pause currently running solution
+         * Reset the pattern (no color highlights)
+         */
+        
+        // TODO
+    }
 
-        // Non empty stack
+    won() { return this.explored.size === this.segments.length }
+
+    retrieve() {
+
         if (this.stack.length) {
-
-            // Get last move of stack and its start node
+            
+            // Upcoming move
             var move = this.stack[this.stack.length-1];
-            var startNode = move.segment.oppNode(move.node);
-
-            // Retrieve until solution start node matches that of move
+            
             while(this.solution.length) {
-                var currMove = this.solution.pop();
-                var currStart = currMove.segment.oppNode(currMove.node);
+                
+                var curr = this.solution.pop();
 
-                this.moveSequence.push({
-                    node: currMove.node,
-                    segment: currMove.segment,
-                    grow: false
-                });
+                this.moves.push(new Move(
+                    curr.start,
+                    curr.segment,
+                    curr.end,
+                    false,
+                    this.render
+                ));
 
-                this.explored.delete(currMove.segment);
+                this.explored.delete(curr.segment);
 
                 if (
-                    currStart === startNode &&  
+                    curr.start === move.start &&
                     !this.explored.has(move.segment)
                 ) { break }
             }
         }
     }
 
-    renderSolution() {
-        if (this.solution.length) {
-            var move = this.solution.shift();
-            
-            this.flow(move.segment, move.node, this.renderSolution.bind(this));
+    renderMoves() {
+
+        if (this.moves.length) {
+
+            var move = this.moves.shift();
+    
+            move.makeMove(this.renderMoves.bind(this));
         }
     }
 
-    renderMove() {
+    availableMoves(node) {
+        /**
+         * Return a list of available moves from current nodes
+         * 
+         * Exclude moves that are already been taken
+         * 
+         * A move is considered explored when its segment is explored
+         */
 
-        if (this.moveSequence.length) {
-            var move = this.moveSequence.shift();
+        var availMoves = [];
+        var move;
 
-            if (move.grow) { this.flow(move.segment, move.node, this.renderMove.bind(this)) }
-            else { this.retrieve(move.segment, move.node, this.renderMove.bind(this)) }
-        } else if (this.won()) {
+        this.segments.forEach(segment => {
+            
+            if (!this.explored.has(segment)) {
+                
+                if (segment.a === node) {
+                    move = new Move(segment.a, segment, segment.b, true, this.render);
+    
+                    availMoves.push(move);
+                } else if (segment.b === node) {
+                    move = new Move(segment.b, segment, segment.a, true, this.render);
+                
+                    availMoves.push(move);
+                }
+            }
+        });
+        
+        return availMoves;
+    }
+}
 
-            // Reset and Render Solution
-            this.reset();
-            this.renderSolution();
+class Move {
+    constructor(start, segment, end, grow, render) {
+        
+        this.start = start;
+        this.end = end;
+        this.segment = segment;
+        this.grow = grow;
+
+        this.render = render;
+    }
+
+    makeMove(callBack) {
+
+        this.segment.active = true;
+        
+        if (this.grow) {
+
+            this.segment.grow = {
+                endNode: this.end,
+                percent: 0
+            };
+            
+            this.segment.color = "green";
+
+            var interval = setInterval(() => {
+            
+                this.segment.grow.percent += 1;
+    
+                if (this.segment.grow.percent === 100) {
+                    
+                    clearInterval(interval);
+                    callBack();
+                }
+    
+                this.render();
+            }, 1);
         } else {
+
+            this.segment.grow = {
+                endNode: this.end,
+                percent: 100
+            };
             
-            // When No Solution
-            // Render all segments as active red
-            this.segments.forEach(segment => {
-                segment.active = true;
-                segment.flow.percent = 100;
-                segment.color = "red";
-            })
+            this.segment.color = "red";
+
+            var interval = setInterval(() => {
+            
+                this.segment.grow.percent -= 1;
+    
+                if (this.segment.grow.percent === 0) {
+                    
+                    this.segment.active = false;
+                    clearInterval(interval);
+                    callBack();
+                }
+    
+                this.render();
+            }, 1);
         }
-    }
-
-    won() {
-
-        // Won when all segments are explored
-        if (this.segments.length === this.explored.size) { return true }
-        else { return false }
-    }
-
-    flow(segment, node, callBack) {
-        segment.flow = {
-            toNode: node,
-            percent: 0
-        };
-
-        segment.active = true;
-        segment.color = "green";
-
-        var interval = setInterval(() => {
-            segment.flow.percent += 1;
-
-            if (segment.flow.percent === 100) {
-                clearInterval(interval);
-                callBack();
-            }
-
-            this.render();
-        }, 1);
-    }
-
-    retrieve(segment, node, callBack) {
-        segment.flow = {
-            toNode: node,
-            percent: 100
-        }
-
-        segment.active = true;
-        segment.color = "red";
-
-        var interval = setInterval(() => {
-            segment.flow.percent -= 1;
-
-            if (segment.flow.percent === 0) {
-                clearInterval(interval);
-                segment.active = false;
-                callBack();
-            }
-
-            this.render();
-        }, 1);
-    }
-
-    neighbours(node) {
-
-        var neighbours = [];
-
-        this.segments.forEach(segment => {
-
-            if (segment.a === node) {
-                neighbours.push({
-                    node: segment.b,
-                    segment: segment,
-                    grow: true
-                });
-            } else if (segment.b === node) {
-                neighbours.push({
-                    node: segment.a,
-                    segment: segment,
-                    grow: true
-                });
-            }
-        });
-
-        return neighbours;
-    }
-
-    reset() {
-        this.segments.forEach(segment => {
-            segment.flow.percent = 0;
-            segment.active = false;
-        });
     }
 }
 

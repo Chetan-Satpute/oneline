@@ -8,18 +8,18 @@ class Segment {
         this.cap = "round";
         this.active = false;
 
-        /* Flow 
-         * value of flow can be
-         * { startNode: node, percent: value }
+        /* grow 
+         * value of grow can be
+         * { endNode: node, percent: value }
          * 
-         * flow determines incomplete render of segment node
+         * grow determines incomplete render of segment node
          * 
          * startNode is the node to start rendering from 
          *
          * percent value will determine size of segment to be rendered
          * 
          */
-        this.flow = false;
+        this.grow = false;
     }
 
     draw(ctx) {
@@ -55,28 +55,29 @@ class Segment {
         }
 
         // Render partial segment above base segment
-        if(this.flow) {
+        if(this.grow) {
 
             ctx.beginPath();
 
             // Position at which to end segment
             var pos;
 
-            if(this.flow.toNode !== this.a) {
+            if(this.grow.endNode !== this.a) {
                 pos = {
-                    x: this.a.x + (this.b.x-this.a.x) * (this.flow.percent / 100),
-                    y: this.a.y + (this.b.y-this.a.y) * (this.flow.percent / 100)
+                    x: this.a.x + (this.b.x-this.a.x) * (this.grow.percent / 100),
+                    y: this.a.y + (this.b.y-this.a.y) * (this.grow.percent / 100)
                 }
 
                 ctx.moveTo(this.a.x, this.a.y);
             } else {
                 pos = {
-                    x: this.b.x + (this.a.x-this.b.x) * (this.flow.percent / 100),
-                    y: this.b.y + (this.a.y-this.b.y) * (this.flow.percent / 100)
+                    x: this.b.x + (this.a.x-this.b.x) * (this.grow.percent / 100),
+                    y: this.b.y + (this.a.y-this.b.y) * (this.grow.percent / 100)
                 }
-            
+
                 ctx.moveTo(this.b.x, this.b.y);
             }
+
 
             ctx.strokeStyle = this.color;
             ctx.lineWidth = this.width;

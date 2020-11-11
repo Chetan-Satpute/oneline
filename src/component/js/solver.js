@@ -48,7 +48,7 @@ class Solver{
             var availMoves = this.availableMoves(move.end);
             
             if (availMoves.length) {
-                
+
                 availMoves.forEach(m => {
 
                     m.cost = move.cost + 1;
@@ -113,9 +113,39 @@ class Solver{
 
         if (this.moves.length) {
 
+            // Render all moves
+
             var move = this.moves.shift();
     
             move.makeMove(this.renderMoves.bind(this));
+        } else if (this.won()) {
+
+            // Render Solution
+
+            this.reset();
+            this.renderSolution();
+        } else {
+
+            // Render all segments red
+
+            this.segments.forEach(segment => {
+                segment.active = true;
+                segment.color = "red";
+                segment.grow = {
+                    endNode: segment.a,
+                    percent: 100
+                }
+            });
+        }
+    }
+
+    renderSolution() {
+
+        if (this.solution.length) {
+
+            var move = this.solution.shift();
+
+            move.makeMove(this.renderSolution.bind(this));
         }
     }
 
@@ -148,6 +178,14 @@ class Solver{
         });
         
         return availMoves;
+    }
+
+    reset() {
+
+        this.segments.forEach(segment => {
+            segment.active = false;
+            segment.grow = false;
+        });
     }
 }
 

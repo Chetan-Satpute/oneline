@@ -25,7 +25,7 @@ class Controls extends React.Component {
         var create = require('./images/cursor.svg');
         var upload = require('./images/upload.svg');
         var play = require('./images/play.svg');
-        // var stop = require('./images/stop.svg');
+        var stop = require('./images/stop.svg');
 
         return (
             <div id="controlContainer">
@@ -72,7 +72,7 @@ class Controls extends React.Component {
                             onClick={this.props.solve} >
                             <img
                                 className="controlIcons"
-                                src={play}
+                                src={this.props.play ? play:stop}
                                 alt="Play" />
                         </ControlButton> 
                     

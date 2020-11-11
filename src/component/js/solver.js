@@ -1,5 +1,5 @@
 class Solver{
-    constructor(nodes, segments, render, startNode) {
+    constructor(nodes, segments, render, startNode, done) {
 
         // Pattern
         this.nodes = nodes;
@@ -22,6 +22,10 @@ class Solver{
 
         // Soution of pattern
         this.solution = [];
+
+        // Function to call when done solving
+        this.done = done;
+        this.play = true;
     }
 
     start() {
@@ -75,7 +79,7 @@ class Solver{
          * Reset the pattern (no color highlights)
          */
         
-        // TODO
+        this.play = false;
     }
 
     won() { return this.explored.size === this.segments.length }
@@ -111,31 +115,38 @@ class Solver{
 
     renderMoves() {
 
-        if (this.moves.length) {
-
-            // Render all moves
-
-            var move = this.moves.shift();
+        if(this.play) {
+            
+            if (this.moves.length) {
     
-            move.makeMove(this.renderMoves.bind(this));
-        } else if (this.won()) {
-
-            // Render Solution
-
-            this.reset();
-            this.renderSolution();
+                // Render all moves
+    
+                var move = this.moves.shift();
+        
+                move.makeMove(this.renderMoves.bind(this));
+            } else if (this.won()) {
+    
+                // Render Solution
+    
+                this.reset();
+                this.renderSolution();
+            } else {
+    
+                // Render all segments red
+    
+                this.segments.forEach(segment => {
+                    segment.active = true;
+                    segment.color = "red";
+                    segment.grow = {
+                        endNode: segment.a,
+                        percent: 100
+                    }
+                });
+    
+                this.done();
+            }
         } else {
-
-            // Render all segments red
-
-            this.segments.forEach(segment => {
-                segment.active = true;
-                segment.color = "red";
-                segment.grow = {
-                    endNode: segment.a,
-                    percent: 100
-                }
-            });
+            this.reset();
         }
     }
 
@@ -146,6 +157,9 @@ class Solver{
             var move = this.solution.shift();
 
             move.makeMove(this.renderSolution.bind(this));
+        } else {
+
+            this.done();
         }
     }
 

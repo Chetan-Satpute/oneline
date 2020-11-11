@@ -22,7 +22,9 @@ class Canvas extends React.Component {
 
                 // when not in edit mode
                 'select': true
-            }
+            },
+
+            play: true
         }
         
         this.updateBoard = this.updateBoard.bind(this);
@@ -36,6 +38,7 @@ class Canvas extends React.Component {
         this.handleMove = this.handleMove.bind(this);
         
         this.solve = this.solve.bind(this);
+        this.doneSolving = this.doneSolving.bind(this);
     }
 
     componentDidMount() {
@@ -221,18 +224,34 @@ class Canvas extends React.Component {
 
     solve() {
 
-        if (!this.state.startNode) {
-            alert("Select a node to start solving!");
+        if (this.state.play) {
+
+            if (!this.state.startNode) {
+                alert("Select a node to start solving!");
+            } else {
+       
+                this.model = new Solver(
+                    this.state.nodes, 
+                    this.state.segments, 
+                    this.updateBoard,
+                    this.state.startNode,
+                    this.doneSolving
+                );
+                
+                this.model.start();
+    
+                this.setState({ play: false });
+            }
         } else {
-            
-            var model = new Solver(
-                this.state.nodes, 
-                this.state.segments, 
-                this.updateBoard,
-                this.state.startNode
-            );
-            model.start();
+
+            this.model.stop();
+            this.doneSolving();
         }
+    }
+
+    doneSolving() {
+
+        this.setState({ play: true });
     }
 
     updateBoard(nodes, segments) {
@@ -319,6 +338,7 @@ class Canvas extends React.Component {
                     tool={this.state.tool}
                     updateToolStatus={this.updateToolStatus}
                     resetBoard={this.resetBoard}
+                    play={this.state.play}
                     edit={true} />
 
             </div>

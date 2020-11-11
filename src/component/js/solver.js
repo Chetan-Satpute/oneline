@@ -44,10 +44,14 @@ class Solver{
             this.moves.push(move);
             this.solution.push(move);
 
-            var availMoves = this.availableMoves(move.end)
+            var availMoves = this.availableMoves(move.end);
             
             if (availMoves.length) {
-                availMoves.forEach(move => this.stack.push(move));
+                availMoves.forEach(m => {
+
+                    m.cost = move.cost+1;
+                    this.stack.push(m)
+                });
             } else if (this.won()) {
                 
                 console.log("Won!");
@@ -97,7 +101,7 @@ class Solver{
 
                 if (
                     curr.start === move.start &&
-                    !this.explored.has(move.segment)
+                    this.explored.size == move.cost
                 ) { break }
             }
         }
@@ -152,6 +156,8 @@ class Move {
         this.end = end;
         this.segment = segment;
         this.grow = grow;
+
+        this.cost = 0;
 
         this.render = render;
     }

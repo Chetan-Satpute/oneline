@@ -132,8 +132,6 @@ class Canvas extends React.Component {
         }
 
         if (this.state.tool.select) {
-            
-            var nodeList = this.state.nodes;
             var sNode = this.state.startNode;
 
             if (sNode && node) {

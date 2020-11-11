@@ -41,15 +41,17 @@ class Solver{
             var move = this.stack.pop();
             this.explored.add(move.segment);
 
+
             this.moves.push(move);
             this.solution.push(move);
 
             var availMoves = this.availableMoves(move.end);
             
             if (availMoves.length) {
+                
                 availMoves.forEach(m => {
 
-                    m.cost = move.cost+1;
+                    m.cost = move.cost + 1;
                     this.stack.push(m)
                 });
             } else if (this.won()) {
@@ -101,7 +103,7 @@ class Solver{
 
                 if (
                     curr.start === move.start &&
-                    this.explored.size == move.cost
+                    this.explored.size === move.cost
                 ) { break }
             }
         }
@@ -196,7 +198,7 @@ class Move {
             
             this.segment.color = "red";
 
-            var interval = setInterval(() => {
+            interval = setInterval(() => {
             
                 this.segment.grow.percent -= 1;
     

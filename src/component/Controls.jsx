@@ -23,9 +23,9 @@ class Controls extends React.Component {
 
         var erase = require('./images/eraser.svg');
         var create = require('./images/cursor.svg');
-        var upload = require('./images/upload.svg');
-        var play = require('./images/play.svg');
-        var stop = require('./images/stop.svg');
+        // var upload = require('./images/upload.svg');
+        // var play = require('./images/play.svg');
+        // var stop = require('./images/stop.svg');
 
         return (
             <div id="controlContainer">
@@ -68,21 +68,22 @@ class Controls extends React.Component {
 
                     : <React.Fragment>
                         <ControlButton
-                            color="dark"
+                            title={this.props.play ? "Start":"Stop"}
+                            color={this.props.play ? "success":"danger"}
                             onClick={this.props.solve} >
-                            <img
+                            {/* <img
                                 className="controlIcons"
                                 src={this.props.play ? play:stop}
-                                alt="Play" />
+                                alt="Play" /> */}
                         </ControlButton> 
                     
-                        <ControlButton
+                        {/* <ControlButton
                             color="dark" >
                             <img
                                 className="controlIcons"
                                 src={upload}
                                 alt="Upload" />
-                        </ControlButton>
+                        </ControlButton> */}
 
                     </React.Fragment>
                 }
@@ -101,7 +102,7 @@ function EditButton(props) {
                 type="button"
                 className="btn btn-secondary controlBtn dropdown-toggle"
                 onClick={props.switchEdit} >
-                <b>Edit</b>
+                <b></b>
             </button>
         </div>
     )
@@ -113,7 +114,7 @@ function ControlButton(props) {
             type="button"
             className={`btn btn-${props.color} controlBtn ${props.active ? "active":""}`}
             onClick={props.onClick} >
-            {props.title && props.title}
+            <b><span>{props.title && props.title}</span></b>
             {props.children}
         </button>
     );

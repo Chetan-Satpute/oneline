@@ -38,7 +38,7 @@
 
 @media only screen and (max-width: 800px) {
     #controlContainer {
-        flex: 0 1 15%;
+        flex: 0 0 15%;
         flex-direction: row;
     }
 }

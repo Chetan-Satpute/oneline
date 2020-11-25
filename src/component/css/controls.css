@@ -36,9 +36,17 @@
     width: 50%;
 }
 
+.controlIconsPlay {
+    width: 50%;
+}
+
 @media only screen and (max-width: 800px) {
     #controlContainer {
         flex: 0 0 15%;
         flex-direction: row;
+    }
+
+    .controlIconsPlay {
+        width: 25%;
     }
 }

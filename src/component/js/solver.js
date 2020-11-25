@@ -231,7 +231,7 @@ class Move {
 
             var interval = setInterval(() => {
             
-                this.segment.grow.percent += 1;
+                this.segment.grow.percent += 2;
     
                 if (this.segment.grow.percent === 100) {
                     

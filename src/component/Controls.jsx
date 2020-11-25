@@ -24,8 +24,8 @@ class Controls extends React.Component {
         var erase = require('./images/eraser.svg');
         var create = require('./images/cursor.svg');
         // var upload = require('./images/upload.svg');
-        // var play = require('./images/play.svg');
-        // var stop = require('./images/stop.svg');
+        var play = require('./images/play.svg');
+        var stop = require('./images/stop.svg');
 
         return (
             <div id="controlContainer">
@@ -68,22 +68,14 @@ class Controls extends React.Component {
 
                     : <React.Fragment>
                         <ControlButton
-                            title={this.props.play ? "Start":"Stop"}
-                            color={this.props.play ? "success":"danger"}
+                            color="dark"
                             onClick={this.props.solve} >
-                            {/* <img
-                                className="controlIcons"
-                                src={this.props.play ? play:stop}
-                                alt="Play" /> */}
-                        </ControlButton> 
-                    
-                        {/* <ControlButton
-                            color="dark" >
                             <img
-                                className="controlIcons"
-                                src={upload}
-                                alt="Upload" />
-                        </ControlButton> */}
+                                className="controlIconsPlay"
+                                src={this.props.play ? play:stop}
+                                alt="Play" />
+                        </ControlButton> 
+                        
 
                     </React.Fragment>
                 }

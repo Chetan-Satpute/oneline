@@ -23,23 +23,22 @@ class Board extends React.Component {
                 // when not in edit node
                 'select': true
             },
-            toolStatus: true,
 
             play: true
         }
         
+        this.updateToolStatus = helper.updateToolStatus.bind(this);
         this.updateBoard = helper.updateBoard.bind(this);
         this.resetBoard = helper.resetBoard.bind(this);
-        this.updateToolStatus = helper.updateToolStatus.bind(this);
 
-        this.mouseUp = canvasHelper.mouseUp.bind(this);
-        this.mouseDown = canvasHelper.mouseDown.bind(this);
-        this.mouseMove = this.mouseMove.bind(this);
-        this.handleMove = canvasHelper.handleMove.bind(this);
         this.handleClick = canvasHelper.handleClick.bind(this);
+        this.handleMove = canvasHelper.handleMove.bind(this);
+        this.mouseDown = canvasHelper.mouseDown.bind(this);
+        this.mouseUp = canvasHelper.mouseUp.bind(this);
+        this.mouseMove = this.mouseMove.bind(this);
         
-        this.solve = helper.solve.bind(this);
         this.doneSolving = helper.doneSolving.bind(this);
+        this.solve = helper.solve.bind(this);
     }
 
     componentDidMount() {

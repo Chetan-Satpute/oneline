@@ -52,6 +52,15 @@ export function updateToolStatus(tool) {
         'select': false
     }
 
+    // Reset tool status
+    this.selected = null;
+    this.drag = null;
+    this.setState({ 
+        hoverSegment: null, 
+        startNode: null
+    });
+
+    // Switched to edit mode
     if (this.state.startNode) {
 
         let nodeList = this.state.nodes;

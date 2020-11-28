@@ -4,7 +4,19 @@
     width: 20%;
     height: 100%;
     z-index: 1;
-    color: white;
+    color: snow;
+    padding: 1%;
+}
+
+#infoIcons {
+    height: 25px;
+    line-height: 0;
+    margin: 2px;
+}
+
+hr {
+    border-color: white;
+    border-width: thin;
 }
 
 @media only screen and (max-width: 800px) {
@@ -13,5 +25,6 @@
         position: absolute;
         width: 100%;
         opacity: 0;
+        padding: 5%;
     }
 }

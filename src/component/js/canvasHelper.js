@@ -148,8 +148,8 @@ export function handleClick(event) {
                 for (var i = 0; i < segmentList.length; i++) {
                     
                     if (
-                        segmentList[i].a == this.selected ||
-                        segmentList[i].b == this.selected
+                        segmentList[i].a === this.selected ||
+                        segmentList[i].b === this.selected
                     ) {
                         associated = true
                         break;

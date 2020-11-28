@@ -63,6 +63,8 @@ class Solver{
             } else if (this.won()) {
                 
                 console.log("Won!");
+                
+                break;
             } else {
                 
                 // Retrieve

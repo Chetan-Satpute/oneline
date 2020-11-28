@@ -1,18 +1,26 @@
 import React from 'react';
 import './css/sideBar.css';
+import { RESPONSIVE_WIDTH } from './App';
 
 class SideBar extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            childRender: false
+            childRender: false      // Whether or not to render children
         }
     }
 
     componentDidMount() {
-        if (window.screen.width <= 800)
+
+        /**
+         * Fade transition for sidebar when opening
+         *
+         * Only on mobile devices ( Side bar is fixed for PC )
+         */
+        if (window.screen.width <= RESPONSIVE_WIDTH)
         {
+            // Initial opacity value for side bar
             var value = 0;
 
             var sideBar = document.getElementById('sideBar');
@@ -27,11 +35,15 @@ class SideBar extends React.Component {
                 if (value > 1)
                 {
                     clearInterval(interval);
+
+                    // Render children when Fade transition is done
                     this.setState({ childRender: true });
                 }
 
             }, 1);
         } else {
+
+            // No fade transition for PC hence render children
             this.setState({ childRender: true });
         }
     }
@@ -41,13 +53,13 @@ class SideBar extends React.Component {
         return (
             <div id="sideBar"> 
             
-            {this.state.childRender && 
-            
-                <React.Fragment>
-                    
-                    This is sidebar.
+                {this.state.childRender && 
+                
+                    <React.Fragment>
+                        
+                        This is sidebar.
 
-                </React.Fragment> }
+                    </React.Fragment> }
             
             </div>
         );

@@ -36,6 +36,9 @@ class Solver{
          * Prepare solution (Solution of pattern)
          */
 
+        // Reset
+        this.reset();
+
         // Stack has all possible moves from first node
         this.stack = this.availableMoves(this.startNode);
 
@@ -44,7 +47,6 @@ class Solver{
             // Make a move
             var move = this.stack.pop();
             this.explored.add(move.segment);
-
 
             this.moves.push(move);
             this.solution.push(move);
@@ -61,7 +63,6 @@ class Solver{
             } else if (this.won()) {
                 
                 console.log("Won!");
-                break;
             } else {
                 
                 // Retrieve

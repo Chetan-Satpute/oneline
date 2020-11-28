@@ -1,15 +1,25 @@
 import React from 'react';
-import Canvas from './Canvas';
+import Board from './Board';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
 import './css/app.css';
+
+export var RESPONSIVE_WIDTH = 800;
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            sideBar: window.screen.width > 800
+
+            /*
+             * Represents side bar open / close state
+             * 
+             * Side bar is open by default on wide screens ( PC )
+             * 
+             * Side bar is closed by default on small screens ( mobile devices )
+             */
+            sideBar: window.screen.width > RESPONSIVE_WIDTH
         }
 
         this.toggleSidebar = this.toggleSidebar.bind(this);
@@ -31,7 +41,7 @@ class App extends React.Component {
 
                     {this.state.sideBar && <SideBar />}
 
-                    <Canvas />
+                    <Board />
 
                 </div>
 

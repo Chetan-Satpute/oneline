@@ -57,6 +57,9 @@ export function updateToolStatus(tool) {
         let nodeList = this.state.nodes;
         nodeList[nodeList.indexOf(this.state.startNode)].startNode = false;
 
+        if (this.model)
+            this.model.reset();
+
         this.setState({ 
             nodes: nodeList,
             startNode: null 

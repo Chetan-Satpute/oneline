@@ -2,13 +2,14 @@ import * as utils from './utils';
 import Segment from './segment';
 import Node from './node';
 
-/**
+/*
  * Class variables and their meaning
  *  
  * this.selected: Node at which segment creation starts
  * this.drag: Node which is being dragged
  * 
  */
+
 
 export function handleMove(event) {
 
@@ -193,8 +194,12 @@ export function handleClick(event) {
             this.hoverNode = null;
 
             // Make sure that there is no isolated node left
+            // TODO
 
-            this.setState({ nodes: nodeList });
+            this.setState({ 
+                nodes: nodeList,
+                segments: segmentList
+            });
         }
     }
 }

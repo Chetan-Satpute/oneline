@@ -155,14 +155,20 @@ class Solver{
 
     renderSolution() {
 
-        if (this.solution.length) {
-
-            var move = this.solution.shift();
-
-            move.makeMove(this.renderSolution.bind(this));
+        if (this.play)
+        {
+            if (this.solution.length) {
+    
+                var move = this.solution.shift();
+    
+                move.makeMove(this.renderSolution.bind(this));
+            } else {
+    
+                this.done();
+            }
         } else {
 
-            this.done();
+            this.reset();
         }
     }
 

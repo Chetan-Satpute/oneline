@@ -1,10 +1,7 @@
 import React from 'react';
-import Node from './js/node';
-import Segment from './js/segment';
-import * as utils from './js/utils';
-import * as helper from './js/canvasHelper';
+import * as canvasHelper from './js/canvasHelper';
+import * as helper from './js/helper';
 import Controls from './Controls';
-import Solver from './js/solver';
 
 class Board extends React.Component {
     constructor(props) {
@@ -31,18 +28,18 @@ class Board extends React.Component {
             play: true
         }
         
-        this.updateBoard = this.updateBoard.bind(this);
-        this.resetBoard = this.resetBoard.bind(this);
-        this.updateToolStatus = this.updateToolStatus.bind(this);
+        this.updateBoard = helper.updateBoard.bind(this);
+        this.resetBoard = helper.resetBoard.bind(this);
+        this.updateToolStatus = helper.updateToolStatus.bind(this);
 
-        this.mouseUp = helper.mouseUp.bind(this);
-        this.mouseDown = helper.mouseDown.bind(this);
+        this.mouseUp = canvasHelper.mouseUp.bind(this);
+        this.mouseDown = canvasHelper.mouseDown.bind(this);
         this.mouseMove = this.mouseMove.bind(this);
-        this.handleMove = helper.handleMove.bind(this);
-        this.handleClick = helper.handleClick.bind(this);
+        this.handleMove = canvasHelper.handleMove.bind(this);
+        this.handleClick = canvasHelper.handleClick.bind(this);
         
-        this.solve = this.solve.bind(this);
-        this.doneSolving = this.doneSolving.bind(this);
+        this.solve = helper.solve.bind(this);
+        this.doneSolving = helper.doneSolving.bind(this);
     }
 
     componentDidMount() {
@@ -74,44 +71,8 @@ class Board extends React.Component {
         this.handleMove(event);
     }
 
-    solve() {
+    render() {
 
-        if (this.state.play) {
-
-            if (!this.state.startNode) {
-                alert("Select a node to start solving!");
-            } else {
-       
-                this.model = new Solver(
-                    this.state.nodes, 
-                    this.state.segments, 
-                    this.updateBoard,
-                    this.state.startNode,
-                    this.doneSolving
-                );
-                
-                this.model.start();
-    
-                this.setState({ play: false });
-            }
-        } else {
-
-            this.model.stop();
-            this.doneSolving();
-        }
-    }
-
-    doneSolving() {
-
-        this.setState({ play: true });
-    }
-
-    updateBoard(nodes, segments) {
-        this.setState({ nodes: nodes, segments: segments });
-        this.canvasDraw();
-    }
-
-    canvasDraw() {
         // Clear canvas context
         if (this.ctx) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -129,43 +90,6 @@ class Board extends React.Component {
         this.state.nodes.forEach(node => {
             node.draw(this.ctx);
         });
-    }
-
-    updateToolStatus(tool) {
-
-        let toolStatus = this.state.tool;
-
-        toolStatus = {
-            'create': false,
-            'erase': false,
-            'select': false
-        }
-
-        if (this.state.startNode) {
-
-            let nodeList = this.state.nodes;
-            nodeList[nodeList.indexOf(this.state.startNode)].startNode = false;
-
-            this.setState({ 
-                nodes: nodeList,
-                startNode: null 
-            });
-        }
-        toolStatus[tool] = true;
-
-        this.setState({ tool: toolStatus });
-    }
-
-    resetBoard() {
-        this.setState({ nodes: [], segments: [] });
-        this.selected = null;
-        this.hoverNode = null;
-        this.hoverSegment = null;
-    }
-
-    render() {
-
-        this.canvasDraw();
 
         return (
 

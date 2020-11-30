@@ -89,7 +89,9 @@ export function handleClick(event) {
 
         var sNode = this.state.startNode;       // Node to start solving
 
-        if (node) {
+        // When clicked on a node
+        // Pattern is not currently solving
+        if (node && this.state.play) {
 
             // Deactivate previous startNode
             if (sNode) {

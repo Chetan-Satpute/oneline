@@ -55,11 +55,20 @@ class Solver{
             
             if (availMoves.length) {
 
-                availMoves.forEach(m => {
+                // availMoves.forEach(m => {
+
+                //     m.cost = move.cost + 1;
+                //     this.stack.push(m)
+                // });
+
+                for(var i = 0; i < availMoves.length; i++)
+                {
+                    let m = availMoves[i];
 
                     m.cost = move.cost + 1;
-                    this.stack.push(m)
-                });
+                    this.stack.push(m)                    
+                }
+
             } else if (this.won()) {
                 
                 console.log("Won!");
@@ -77,7 +86,8 @@ class Solver{
     }
 
     stop() {
-        /**
+        
+        /*
          * Pause currently running solution
          * Reset the pattern (no color highlights)
          */

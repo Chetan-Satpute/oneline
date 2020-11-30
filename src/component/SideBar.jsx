@@ -70,10 +70,10 @@ class SideBar extends React.Component {
                         This web app is an automation of one line puzzle.
                         <br />
                         <br />
-                        Use <img id="infoIcons" src={create} /> to create a pattern on white canvas.
+                        Use <img id="infoIcons" src={create} alt="Create Tool" /> to create a pattern on white canvas.
                         <br />
                         <br />
-                        Use <img id="infoIcons" src={erase} /> to erase a dot and it's connecting lines.
+                        Use <img id="infoIcons" src={erase} alt="Erase Tool" /> to erase a dot and it's connecting lines.
                         <br />
                         <br />
                         Use <button id="infoIcons" className="btn btn-danger">Reset</button> to clear canvas.
@@ -85,12 +85,12 @@ class SideBar extends React.Component {
                         Select a dot to start solving from.
                         <br />
                         <br />
-                        Tap <img id="infoIcons" src={play} /> to start and <img id="infoIcons" src={stop} /> to stop.
+                        Tap <img id="infoIcons" src={play} alt="Play Button" /> to start and <img id="infoIcons" src={stop} alt="Stop Button" /> to stop.
                         <hr />
                         Developed by <u><i><b>Chetan Satpute</b></i></u>
                         <br />
                         <a href="https://github.com/Chetan-Satpute">
-                            <img id="infoIcons" src={github} />
+                            <img id="infoIcons" src={github} alt="Github Icon" />
                         </a>
 
                     </React.Fragment> }

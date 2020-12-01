@@ -75,6 +75,8 @@ class Board extends React.Component {
         // Clear canvas context
         if (this.ctx) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.fillStyle = "#ffffff";
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         }
 
         // Render hoverSegment

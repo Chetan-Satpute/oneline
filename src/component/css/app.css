@@ -1,0 +1,26 @@
+main {
+    flex: 1 1 auto;
+    overflow-y: scroll;
+    
+    display: flex;
+    flex-direction: column;
+}::-webkit-scrollbar {
+    display: none;
+}
+
+#controlcontainer {
+    background-color: brown;
+    flex: 0 0 15%;
+}
+
+#canvascontainer {
+    background-color: green;
+    flex: 1 1 auto;
+
+    display: flex;
+}
+
+canvas {
+    flex: 1 1 auto;
+    background-color: white;
+}

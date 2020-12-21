@@ -7,7 +7,7 @@ export class NewCard extends React.Component {
         return (
             <button
                 className="btn btn-primary bg-gradient m-2 p-2"
-                onClick={() => { this.props.onClick(true) }}
+                onClick={() => { this.props.onClick(true, true) }}
                 type="button">
                 <span><b>Create Pattern</b></span>
             </button>
@@ -27,7 +27,7 @@ export class Card extends React.Component {
         return (
             <div className="p-1">
                 <div
-                    onClick={() => { this.props.onClick(true) }} 
+                    onClick={() => { this.props.onClick(true, false) }} 
                     className="card btn m-1">
                     <canvas>
 

@@ -6,7 +6,17 @@ class NavBar extends React.Component {
         return (
             <nav className="navbar navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <span className="navbar-brand"><b>One Line</b></span>
+
+                    <span
+                        onClick={() => { this.props.showBoard(false) }}>
+                        {this.props.board &&
+                            <i id="backarrow" className="btn m-2"></i>}
+                    </span>
+
+                    <span className="navbar-brand fs-2">
+                        <b>One Line</b>
+                    </span>
+
                 </div>
             </nav>
         );

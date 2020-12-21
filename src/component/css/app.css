@@ -1,9 +1,13 @@
 main {
     flex: 1 1 auto;
-    overflow-y: scroll;
-    
+    min-height: 0;  /*Stops main to expand for overflow of pattern container*/
+
     display: flex;
     flex-direction: column;
+}
+
+#patterncontainer {
+    overflow-y: scroll;
 }::-webkit-scrollbar {
     display: none;
 }
@@ -23,4 +27,13 @@ main {
 canvas {
     flex: 1 1 auto;
     background-color: white;
+}
+
+#backarrow {
+    border: solid white;
+    border-width: 0px 5px 5px 0px;
+    display: inline-block;
+    padding: 6px;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
 }

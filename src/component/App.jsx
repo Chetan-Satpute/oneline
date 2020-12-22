@@ -8,7 +8,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            board: false
+            board: true
         }
 
         this.showBoard = this.showBoard.bind(this);

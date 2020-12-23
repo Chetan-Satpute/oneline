@@ -7,9 +7,16 @@ class Canvas extends React.Component {
 
         this.state = {
             nodes: [],
-            segments: []
+            segments: [],
+
+            hoverSegment: null
         }
 
+        this.handleClick = helper.handleClick.bind(this);
+        this.handleMove = helper.handleMove.bind(this);
+        this.mouseDown = helper.mouseDown.bind(this);
+        this.mouseUp = helper.mouseUp.bind(this);
+        this.mouseMove = this.mouseMove.bind(this);
     }
     
     componentDidMount() {
@@ -30,6 +37,16 @@ class Canvas extends React.Component {
         // Normalise coordinate system to use css pixels
         this.ctx.scale(scale, scale);
   
+    }
+
+    mouseMove(event) {
+
+        // When tool is active and node is dragged
+        if (this.drag) {
+            this.moved = true;
+        }
+
+        this.handleMove(event);
     }
 
     render() {
@@ -58,13 +75,13 @@ class Canvas extends React.Component {
             <div id="canvascontainer">
                 <canvas 
                     id="canvas"
+                    onClick={this.handleClick} 
+                    onMouseMove={this.mouseMove}
                     onMouseDown={this.mouseDown}
                     onMouseUp={this.mouseUp}
-                    onMouseMove={this.mouseMove}
-                    onTouchStart={this.mouseDown}
-                    onTouchEnd={this.mouseUp}
                     onTouchMove={this.handleMove}
-                    onClick={this.handleClick} >
+                    onTouchStart={this.mouseDown}
+                    onTouchEnd={this.mouseUp} >
                     Canvas not supported.
                 </canvas>
             </div>

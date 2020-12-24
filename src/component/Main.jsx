@@ -8,15 +8,22 @@ class Main extends React.Component {
         super(props);
 
         this.state = {
-            create: false
+            create: false,
+            startNode: null
         }
 
         this.updateCreate = this.updateCreate.bind(this);
+        this.updateStartNode = this.updateStartNode.bind(this);
     }
 
     updateCreate(showBoardValue, createValue) {
+
         this.setState({ create: createValue });
         this.props.showBoard(showBoardValue);
+    }
+
+    updateStartNode(node) {
+        this.setState({ startNode: node });
     }
 
     render() {
@@ -28,10 +35,13 @@ class Main extends React.Component {
                     ? <React.Fragment>
 
                         <Canvas
-                            create={this.state.create} />
+                            create={this.state.create}
+                            startNode={this.state.startNode}
+                            updateStartNode={this.updateStartNode} />
 
                         <Control
-                            create={this.state.create} />
+                            create={this.state.create}
+                            updateCreate={this.updateCreate} />
 
                     </React.Fragment>
 

@@ -13,12 +13,12 @@ main {
 }
 
 #controlcontainer {
-    background-color: brown;
+    background-color: #212529;
     flex: 0 0 15%;
+    display: flex;
 }
 
 #canvascontainer {
-    background-color: green;
     flex: 1 1 auto;
 
     display: flex;

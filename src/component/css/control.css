@@ -1,0 +1,16 @@
+.cbtnpannel {
+    flex: 1 1 auto;
+    display: flex;
+    word-break: break-all;
+}
+
+.cbtncontainer {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cbtn {
+    flex: 1 1 auto;
+}

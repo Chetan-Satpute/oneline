@@ -6,7 +6,7 @@ class Node {
         this.color = "#50A";
         this.outerRadius = this.radius + 10;
         this.active = true;
-        this.selectedNode = false;
+        this.selected = false;
     }
 
     moveTo(position) {
@@ -16,7 +16,7 @@ class Node {
 
     draw(ctx) {
 
-        if (this.selectedNode) {
+        if (this.selected) {
             this.drawSelected(ctx);
         } else {
 

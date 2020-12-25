@@ -70,7 +70,17 @@ class Canvas extends React.Component {
         this.state.nodes.forEach(node => {
             node.draw(this.ctx);
         });
-        
+
+        // Deactivate startNode when pattern creation
+        if (this.props.create && this.props.startNode) {
+            var nodeList = this.state.nodes;
+
+            nodeList[nodeList.indexOf(this.props.startNode)].selected = false;
+            
+            this.setState({ nodes: nodeList });
+            this.props.updateStartNode(null);
+        }
+
         return (
             <div id="canvascontainer">
                 <canvas 

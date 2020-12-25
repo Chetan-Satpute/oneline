@@ -6,9 +6,6 @@ class Canvas extends React.Component {
         super(props);
 
         this.state = {
-            nodes: [],
-            segments: [],
-
             hoverSegment: null
         }
 
@@ -62,18 +59,18 @@ class Canvas extends React.Component {
         if (this.state.hoverSegment) { this.state.hoverSegment.draw(this.ctx) }
 
         // Render all segments
-        this.state.segments.forEach(segment => {
+        this.props.segments.forEach(segment => {
             segment.draw(this.ctx);
         });
 
         // Render all nodes
-        this.state.nodes.forEach(node => {
+        this.props.nodes.forEach(node => {
             node.draw(this.ctx);
         });
 
         // Deactivate startNode when pattern creation
         if (this.props.create && this.props.startNode) {
-            var nodeList = this.state.nodes;
+            var nodeList = this.props.nodes;
 
             nodeList[nodeList.indexOf(this.props.startNode)].selected = false;
             

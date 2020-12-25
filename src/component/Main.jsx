@@ -8,12 +8,22 @@ class Main extends React.Component {
         super(props);
 
         this.state = {
+            nodes: [],
+            segments: [],
             create: false,
             startNode: null
         }
 
         this.updateCreate = this.updateCreate.bind(this);
         this.updateStartNode = this.updateStartNode.bind(this);
+        this.updatePattern = this.updatePattern.bind(this);
+    }
+
+    updatePattern(nodeList, segmentList) {
+        this.setState({
+            nodes: nodeList,
+            segments: segmentList
+        });
     }
 
     updateCreate(showBoardValue, createValue) {
@@ -37,7 +47,10 @@ class Main extends React.Component {
                         <Canvas
                             create={this.state.create}
                             startNode={this.state.startNode}
-                            updateStartNode={this.updateStartNode} />
+                            updateStartNode={this.updateStartNode}
+                            nodes={this.state.nodes}
+                            segments={this.state.segments}
+                            updatePattern={this.updatePattern} />
 
                         <Control
                             create={this.state.create}

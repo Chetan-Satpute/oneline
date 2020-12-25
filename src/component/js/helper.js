@@ -5,10 +5,10 @@ import Node from './Node';
 export function handleClick(event) {
 
     var pos = utils.get_coordinates(this.canvas, event);        // Current position
-    var node = utils.node_overlap(this.state.nodes, pos);       // Node on current position
+    var node = utils.node_overlap(this.props.nodes, pos);       // Node on current position
 
-    var nodeList = this.state.nodes;
-    var segmentList = this.state.segments;
+    var nodeList = this.props.nodes;
+    var segmentList = this.props.segments;
 
     /*
      * Moved flag represents that a node was moved ( draged )
@@ -42,7 +42,7 @@ export function handleClick(event) {
 
             // Add new node in list of existing nodes
             nodeList.push(node);
-            this.setState({ nodes: nodeList });
+            this.props.updatePattern(nodeList, segmentList);
         }
 
         // Segment creation is in process
@@ -77,16 +77,13 @@ export function handleClick(event) {
                 });
 
                 // update nodes list and segments list
-                this.setState({
-                    nodes: nodeList,
-                    segments: segmentList
-                });
+
+                this.props.updatePattern(nodeList, segmentList);
             }
 
             // Reset tool
+            this.props.updatePattern(nodeList, segmentList);
             this.setState({
-                nodes: nodeList,
-                segments: segmentList,
                 hoverSegment: null
             });
         } else {
@@ -107,7 +104,7 @@ export function handleClick(event) {
 
             nodeList[nodeList.indexOf(node)].selected = true;
 
-            this.setState({ nodes: nodeList });
+            this.props.updatePattern(nodeList, segmentList);
             this.props.updateStartNode(node);
         }
     }
@@ -116,9 +113,10 @@ export function handleClick(event) {
 export function handleMove(event) {
 
     var pos = utils.get_coordinates(this.canvas, event);        // Current position
-    var node = utils.node_overlap(this.state.nodes, pos);       // Node on current position
+    var node = utils.node_overlap(this.props.nodes, pos);       // Node on current position
 
-    var nodeList = this.state.nodes;
+    var nodeList = this.props.nodes;
+    var segmentList = this.props.segments;
 
     // Inactivate previous hover node
     // But not start node of hover segment
@@ -129,13 +127,13 @@ export function handleMove(event) {
             if (this.state.hoverSegment.a !== this.hoverNode) {
                 nodeList[nodeList.indexOf(this.hoverNode)].active = false;
                 this.hoverNode = null;
-                this.setState({ nodes: nodeList });
+                this.props.updatePattern(nodeList, segmentList);
             }
         } else {
 
             nodeList[nodeList.indexOf(this.hoverNode)].active = false;
             this.hoverNode = null;
-            this.setState({ nodes: nodeList });
+            this.props.updatePattern(nodeList, segmentList);
         }
 
     }
@@ -146,13 +144,13 @@ export function handleMove(event) {
         node.active = true;
         this.hoverNode = node;
         nodeList[nodeList.indexOf(node)] = node;
-        this.setState({ nodes: nodeList });
+        this.props.updatePattern(nodeList, segmentList);
     }
 
     // Change position of node being dragged
     if (this.drag) {
         nodeList[nodeList.indexOf(this.drag)].moveTo(pos);
-        this.setState({ nodes: nodeList });
+        this.props.updatePattern(nodeList, segmentList);
     }
 
     // Update hover segment
@@ -170,7 +168,7 @@ export function handleMove(event) {
 export function mouseDown(event) {
 
     var pos = utils.get_coordinates(this.canvas, event);    // Current position
-    var node = utils.node_overlap(this.state.nodes, pos);   // Current node
+    var node = utils.node_overlap(this.props.nodes, pos);   // Current node
 
     if (node) { this.drag = node }
 }

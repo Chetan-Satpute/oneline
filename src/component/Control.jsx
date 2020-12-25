@@ -61,7 +61,8 @@ class ControlButton extends React.Component {
             <div className="cbtncontainer">
                 <button 
                     className={`btn btn-${this.props.color} cbtn m-3`}
-                    onClick={this.props.onClick}>
+                    onClick={this.props.onClick}
+                    type="button" >
                     {this.props.text}
                 </button>
             </div>

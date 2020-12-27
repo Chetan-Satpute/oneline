@@ -24,8 +24,9 @@ class Control extends React.Component {
                         color="primary" />
 
                     <ControlButton
-                        text="Play"
-                        color="primary" />
+                        text={this.props.play ? "Stop":"Play"}
+                        color={this.props.play ? "danger":"primary"}
+                        onClick={() => {this.props.updatePlay(!this.props.play)}} />
 
                     <ControlButton
                         text="Edit Pattern"

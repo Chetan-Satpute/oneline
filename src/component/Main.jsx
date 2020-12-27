@@ -2,6 +2,8 @@ import React from 'react';
 import Control from './Control';
 import Canvas from './Canvas';
 import { NewCard, Card } from './Card';
+import Solve from './js/Solve';
+import Move from './js/Move';
 
 class Main extends React.Component {
     constructor(props) {
@@ -11,12 +13,15 @@ class Main extends React.Component {
             nodes: [],
             segments: [],
             create: false,
-            startNode: null
+            startNode: null,
+            
+            play: false
         }
 
         this.updateCreate = this.updateCreate.bind(this);
         this.updateStartNode = this.updateStartNode.bind(this);
         this.updatePattern = this.updatePattern.bind(this);
+        this.updatePlay = this.updatePlay.bind(this);
     }
 
     updatePattern(nodeList, segmentList) {
@@ -28,8 +33,29 @@ class Main extends React.Component {
 
     updateCreate(showBoardValue, createValue) {
 
+        if (createValue) {
+
+            var nodeList = this.state.nodes;
+
+            if (this.state.startNode) {
+                nodeList[nodeList.indexOf(this.state.startNode)].selected = false;
+            }
+
+            this.setState({ 
+                nodes: nodeList, 
+                startNode: null
+            });
+        }
+
         this.setState({ create: createValue });
         this.props.showBoard(showBoardValue);
+    }
+
+    updatePlay(value) {
+
+
+
+        this.setState({ play: value });
     }
 
     updateStartNode(node) {
@@ -44,6 +70,13 @@ class Main extends React.Component {
                 {this.props.board
                     ? <React.Fragment>
 
+                        {this.state.play && 
+                            <Solve 
+                                nodes={this.state.nodes}
+                                segments={this.state.segments}
+                                startNode={this.state.startNode}
+                                render={this.updatePattern} />}
+
                         <Canvas
                             create={this.state.create}
                             startNode={this.state.startNode}
@@ -54,7 +87,9 @@ class Main extends React.Component {
 
                         <Control
                             create={this.state.create}
-                            updateCreate={this.updateCreate} />
+                            updateCreate={this.updateCreate}
+                            play={this.state.play}
+                            updatePlay={this.updatePlay} />
 
                     </React.Fragment>
 

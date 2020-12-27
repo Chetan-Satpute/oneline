@@ -48,3 +48,56 @@ export function checkSegment(segments, segment) {
 
     return found;
 }
+
+export function makeMove(segment, endNode, grow, callback) {
+
+    var segments = this.props.segments;
+
+    var ids = segments.indexOf(segment);
+
+    segments[ids].active = true;
+
+    if (grow) {
+
+        segments[ids].flow = {
+            endNode: endNode,
+            percent: 0
+        };
+
+        segments[ids].color = "green";
+
+        var interval = setInterval(() => {
+            
+            segments[ids].flow.percent += 2;
+
+            if (segments[ids].flow.percent === 100) {
+
+                clearInterval(interval);
+
+            }
+
+            this.props.render(this.props.nodes, segments);
+        }, 1);
+    } else {
+
+        segments[ids].flow = {
+            endNode: endNode,
+            percent: 100
+        };
+
+        segments[ids].color = "red";
+
+        var interval = setInterval(() => {
+
+            segments[ids].flow.percent -= 1;
+
+            if (segments[ids].flow.percent === 0) {
+
+                clearInterval(interval);
+
+            }
+
+            this.props.render(this.props.nodes, segments);
+        }, 1);
+    }
+}

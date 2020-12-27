@@ -14,7 +14,7 @@ class Segment {
          *  percent: percent
          * }
          */
-        this.flow = false;
+        this.flow = undefined;
     }
 
     draw(ctx) {
@@ -31,6 +31,23 @@ class Segment {
         ctx.lineTo(this.b.x, this.b.y);
         ctx.stroke();
         ctx.globalAlpha = 1;
+
+        // Active
+        if(this.active) {
+            ctx.beginPath();
+            
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = this.outerWidth;
+            ctx.lineCap = this.cap;
+
+            ctx.globalAlpha = 0.2;
+            ctx.moveTo(this.a.x, this.a.y);
+            ctx.lineTo(this.b.x, this.b.y);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            ctx.closePath();
+        }
 
         if (this.flow) {
             this.drawFlow(ctx);

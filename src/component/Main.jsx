@@ -53,9 +53,12 @@ class Main extends React.Component {
 
     updatePlay(value) {
 
-
-
-        this.setState({ play: value });
+        if (value && !this.state.startNode) {
+            alert("Select a node to Start solving!");
+        } else {
+            
+            this.setState({ play: value });
+        }
     }
 
     updateStartNode(node) {
@@ -75,7 +78,8 @@ class Main extends React.Component {
                                 nodes={this.state.nodes}
                                 segments={this.state.segments}
                                 startNode={this.state.startNode}
-                                render={this.updatePattern} />}
+                                render={this.updatePattern}
+                                updatePlay={this.updatePlay} />}
 
                         <Canvas
                             create={this.state.create}

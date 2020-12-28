@@ -20,7 +20,7 @@ class Control extends React.Component {
                 : <ControlButtonPannel>
 
                     <ControlButton
-                        text="Show Solution"
+                        text="Solution"
                         color="primary" />
 
                     <ControlButton
@@ -29,7 +29,7 @@ class Control extends React.Component {
                         onClick={() => {this.props.updatePlay(!this.props.play)}} />
 
                     <ControlButton
-                        text="Edit Pattern"
+                        text="Edit"
                         color="primary"
                         onClick={() => {this.props.updateCreate(true, true)}} />
                 

@@ -49,18 +49,18 @@ export function checkSegment(segments, segment) {
     return found;
 }
 
-export function makeMove(segment, endNode, grow, callback) {
+export function makeMove(move, callBack) {
 
     var segments = this.props.segments;
 
-    var ids = segments.indexOf(segment);
+    var ids = segments.indexOf(move.segment);
 
     segments[ids].active = true;
 
-    if (grow) {
+    if (move.grow) {
 
         segments[ids].flow = {
-            endNode: endNode,
+            endNode: move.endNode,
             percent: 0
         };
 
@@ -73,7 +73,7 @@ export function makeMove(segment, endNode, grow, callback) {
             if (segments[ids].flow.percent === 100) {
 
                 clearInterval(interval);
-
+                callBack();
             }
 
             this.props.render(this.props.nodes, segments);
@@ -81,7 +81,7 @@ export function makeMove(segment, endNode, grow, callback) {
     } else {
 
         segments[ids].flow = {
-            endNode: endNode,
+            endNode: move.endNode,
             percent: 100
         };
 
@@ -93,8 +93,9 @@ export function makeMove(segment, endNode, grow, callback) {
 
             if (segments[ids].flow.percent === 0) {
 
+                segments[ids].active = false;
                 clearInterval(interval);
-
+                callBack();
             }
 
             this.props.render(this.props.nodes, segments);

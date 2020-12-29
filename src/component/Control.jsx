@@ -23,19 +23,19 @@ class Control extends React.Component {
                         text="Solution"
                         color="primary"
                         onClick={() => {this.props.showSolution()}}
-                        disabled={this.props.solution === null || this.props.play || this.props.renderingSolution} />
+                        disabled={this.props.solution === null || this.props.play || this.props.disableAll} />
 
                     <ControlButton
                         text={this.props.play ? "Stop":"Play"}
                         color={this.props.play ? "danger":"primary"}
                         onClick={() => {this.props.updatePlay(!this.props.play)}}
-                        disabled={this.props.renderingSolution} />
+                        disabled={this.props.disableAll} />
 
                     <ControlButton
                         text="Edit"
                         color="primary"
                         onClick={() => {this.props.updateCreate(true, true)}}
-                        disabled={this.props.renderingSolution || this.props.play} />
+                        disabled={this.props.disableAll || this.props.play} />
                 
                 </ControlButtonPannel> }
 

@@ -12,12 +12,12 @@ class Main extends React.Component {
         this.state = {
             nodes: [],
             segments: [],
-            create: false,
+            create: true,
             startNode: null,
             
             play: false,
             solution: null,
-            renderingSolution: false
+            disableAll: false
         }
 
         // Iterator for solution
@@ -57,6 +57,11 @@ class Main extends React.Component {
                 nodes: nodeList, 
                 startNode: null
             });
+        } else {
+
+            this.setState({ 
+                solution: null
+            });
         }
 
         this.setState({ create: createValue });
@@ -65,12 +70,31 @@ class Main extends React.Component {
 
     updatePlay(value) {
 
-        if (value && !this.state.startNode) {
+        if (!this.state.startNode) {
             alert("Select a node to Start solving!");
-        } else {
-            
+        } else {   
+        
+            if (!value) {
+
+                this.setState({ disableAll: true });
+    
+                var i = 0;
+                var interval = setInterval(() => {
+    
+                    i = i + 1;
+                    console.log(i);
+    
+                    if (i === 1) {
+                        this.setState({ disableAll: false });
+                        clearInterval(interval);
+                    }
+                }, 1000)
+            }
+
             this.setState({ play: value });
         }
+
+        
     }
 
     updateStartNode(node) {
@@ -87,7 +111,7 @@ class Main extends React.Component {
     showSolution() {
 
         if (this.itsol === 0) {
-            this.setState({ renderingSolution: true });
+            this.setState({ disableAll: true });
             this.reset();
         }
 
@@ -102,7 +126,7 @@ class Main extends React.Component {
         } else {
             
             this.itsol = 0;
-            this.setState({ renderingSolution: false });
+            this.setState({ disableAll: false });
         }
     }
 
@@ -139,7 +163,7 @@ class Main extends React.Component {
                             updatePlay={this.updatePlay}
                             solution={this.state.solution}
                             showSolution={this.showSolution}
-                            renderingSolution={this.state.renderingSolution} />
+                            disableAll={this.state.disableAll} />
 
                     </React.Fragment>
 

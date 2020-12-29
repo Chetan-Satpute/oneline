@@ -36,6 +36,11 @@ class Canvas extends React.Component {
   
     }
 
+    componentWillUnmount() {
+
+        this.props.updatePattern([], []);
+    }
+
     mouseMove(event) {
 
         // When tool is active and node is dragged
@@ -53,20 +58,20 @@ class Canvas extends React.Component {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.ctx.fillStyle = "#ffffff";
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+            // Render hoverSegment
+            if (this.state.hoverSegment) { this.state.hoverSegment.draw(this.ctx) }
+
+            // Render all segments
+            this.props.segments.forEach(segment => {
+                segment.draw(this.ctx);
+            });
+
+            // Render all nodes
+            this.props.nodes.forEach(node => {
+                node.draw(this.ctx);
+            });
         }
-
-        // Render hoverSegment
-        if (this.state.hoverSegment) { this.state.hoverSegment.draw(this.ctx) }
-
-        // Render all segments
-        this.props.segments.forEach(segment => {
-            segment.draw(this.ctx);
-        });
-
-        // Render all nodes
-        this.props.nodes.forEach(node => {
-            node.draw(this.ctx);
-        });
 
         return (
             <div id="canvascontainer">

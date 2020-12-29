@@ -1,5 +1,4 @@
 import React from 'react';
-import Segment from './Segment';
 import * as utils from './utils';
 
 class Solve extends React.Component {
@@ -28,10 +27,9 @@ class Solve extends React.Component {
     componentDidMount() {
         
         // Solving starts here
-        console.log("Solving...");
 
         // Reset
-        this.reset();
+        this.props.reset();
 
         this.stack = this.availableMoves(this.props.startNode);
 
@@ -50,17 +48,15 @@ class Solve extends React.Component {
                 // Render retrieve moves
     
                 var m = this.moves.pop();
-                this.makeMove(m, this.step);
+                this.makeMove(m, this.step, this.props.nodes, this.props.segments, this.props.render);
             
             } else if (this.stack.length) {
     
                 // Make a Move
     
-                console.log(this.stack);
-    
                 var move = this.stack.pop();
     
-                this.makeMove(move, this.step);
+                this.makeMove(move, this.step, this.props.nodes, this.props.segments, this.props.render);
                 
                 this.explored.add(move.segment);
     
@@ -78,16 +74,14 @@ class Solve extends React.Component {
     
                 } else if (this.won()) {
     
-                    console.log("Won!");
-    
-                    this.props.updatePlay(false);
+                    this.props.updateSolution(this.solution);
                 } else {
     
                     // Retrieve
                     if (this.stack.length) {
     
                         // Upcoming move
-                        var m = this.stack[this.stack.length - 1];
+                        m = this.stack[this.stack.length - 1];
                         
                         while(this.solution.length) {
     
@@ -126,17 +120,15 @@ class Solve extends React.Component {
             }
         } else {
 
-            // Solving is done
-            // Clear canvas
-            this.reset();
+            // // Solving is done
+            // // Clear canvas
+            // this.props.reset();
         }
     }
 
     componentWillUnmount() {
 
         // Solving stops here
-        console.log("component did unmount was called!");
-
         this.solving = false;
     }
 
@@ -176,18 +168,6 @@ class Solve extends React.Component {
         });
 
         return availMoves;
-    }
-
-    reset() {
-
-        var segments = this.props.segments;
-
-        segments.forEach(segment => {
-            segment.active = false;
-            segment.flow = false;
-        });
-
-        this.props.render(this.props.nodes, segments);
     }
 
     render() { return null }

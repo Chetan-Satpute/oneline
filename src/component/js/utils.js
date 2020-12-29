@@ -49,9 +49,7 @@ export function checkSegment(segments, segment) {
     return found;
 }
 
-export function makeMove(move, callBack) {
-
-    var segments = this.props.segments;
+export function makeMove(move, callBack, nodes, segments, render) {
 
     var ids = segments.indexOf(move.segment);
 
@@ -76,7 +74,7 @@ export function makeMove(move, callBack) {
                 callBack();
             }
 
-            this.props.render(this.props.nodes, segments);
+            render(nodes, segments);
         }, 1);
     } else {
 
@@ -87,7 +85,7 @@ export function makeMove(move, callBack) {
 
         segments[ids].color = "red";
 
-        var interval = setInterval(() => {
+        interval = setInterval(() => {
 
             segments[ids].flow.percent -= 1;
 
@@ -98,7 +96,19 @@ export function makeMove(move, callBack) {
                 callBack();
             }
 
-            this.props.render(this.props.nodes, segments);
+            render(nodes, segments);
         }, 1);
     }
+}
+
+export function reset() {
+
+    var segments = this.state.segments;
+
+    segments.forEach(segment => {
+        segment.active = false;
+        segment.flow = false;
+    });
+
+    this.updatePattern(this.state.nodes, segments);
 }

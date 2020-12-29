@@ -21,17 +21,21 @@ class Control extends React.Component {
 
                     <ControlButton
                         text="Solution"
-                        color="primary" />
+                        color="primary"
+                        onClick={() => {this.props.showSolution()}}
+                        disabled={this.props.solution === null || this.props.play || this.props.renderingSolution} />
 
                     <ControlButton
                         text={this.props.play ? "Stop":"Play"}
                         color={this.props.play ? "danger":"primary"}
-                        onClick={() => {this.props.updatePlay(!this.props.play)}} />
+                        onClick={() => {this.props.updatePlay(!this.props.play)}}
+                        disabled={this.props.renderingSolution} />
 
                     <ControlButton
                         text="Edit"
                         color="primary"
-                        onClick={() => {this.props.updateCreate(true, true)}} />
+                        onClick={() => {this.props.updateCreate(true, true)}}
+                        disabled={this.props.renderingSolution || this.props.play} />
                 
                 </ControlButtonPannel> }
 
@@ -63,7 +67,8 @@ class ControlButton extends React.Component {
                 <button 
                     className={`btn btn-${this.props.color} cbtn m-3`}
                     onClick={this.props.onClick}
-                    type="button" >
+                    type="button" 
+                    disabled={this.props.disabled}>
                     {this.props.text}
                 </button>
             </div>

@@ -58,6 +58,10 @@ export function handleClick(event) {
 
                     // Add new segment to state
                     segmentList.push(segment);
+
+                    // Increment degree of both end nodes
+                    segmentList[segmentList.indexOf(segment)].a.degree += 1;
+                    segmentList[segmentList.indexOf(segment)].b.degree += 1;
                 }
 
                 // Inactivate both end nodes of segment
@@ -73,11 +77,18 @@ export function handleClick(event) {
 
                 // Remove all segments that are associated with current node
                 segmentList = segmentList.filter((segment) => {
-                    return ((segment.a !== node) && (segment.b !== node));
+                    
+                    if (((segment.a !== node) && (segment.b !== node))) { return true } 
+                    else {
+
+                        // Decrement degree of both end nodes
+                        segmentList[segmentList.indexOf(segment)].a.degree -= 1;
+                        segmentList[segmentList.indexOf(segment)].b.degree -= 1;
+                        return false;
+                    }
                 });
 
                 // update nodes list and segments list
-
                 this.props.updatePattern(nodeList, segmentList);
             }
 
@@ -94,20 +105,21 @@ export function handleClick(event) {
                 hoverSegment: new Segment(node, node)
             });
         }
-    } else {
-
-        if (node) {
-
-            if (this.props.startNode) {
-                nodeList[nodeList.indexOf(this.props.startNode)].selected = false;
-            }
-
-            nodeList[nodeList.indexOf(node)].selected = true;
-
-            this.props.updatePattern(nodeList, segmentList);
-            this.props.updateStartNode(node);
-        }
     }
+    //  else {
+
+    //     if (node) {
+
+    //         if (this.props.startNode) {
+    //             nodeList[nodeList.indexOf(this.props.startNode)].selected = false;
+    //         }
+
+    //         nodeList[nodeList.indexOf(node)].selected = true;
+
+    //         this.props.updatePattern(nodeList, segmentList);
+    //         this.props.updateStartNode(node);
+    //     }
+    // }
 }
 
 export function handleMove(event) {

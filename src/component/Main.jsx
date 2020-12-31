@@ -29,12 +29,16 @@ class Main extends React.Component {
         this.updatePattern = this.updatePattern.bind(this);
         this.updatePlay = this.updatePlay.bind(this);
         this.updateSolution = this.updateSolution.bind(this);
+        this.updateDisableAll = this.updateDisableAll.bind(this);
         this.showSolution = this.showSolution.bind(this);
         this.makeMove = utils.makeMove.bind(this);
         this.reset = utils.reset.bind(this);
     }
 
     updatePattern(nodeList, segmentList) {
+
+        console.log("Called Render");
+
         this.setState({
             nodes: nodeList,
             segments: segmentList
@@ -70,9 +74,9 @@ class Main extends React.Component {
 
     updatePlay(value) {
 
-        if (!this.state.startNode) {
-            alert("Select a node to Start solving!");
-        } else {   
+        // if (!this.state.startNode) {
+        //     alert("Select a node to Start solving!");
+        // } else {   
         
             if (!value) {
 
@@ -92,13 +96,24 @@ class Main extends React.Component {
             }
 
             this.setState({ play: value });
-        }
+        // }
 
         
     }
 
     updateStartNode(node) {
-        this.setState({ startNode: node });
+        var nodes = this.state.nodes;
+
+        node.selected = true;
+
+        this.setState({ 
+            startNode: node,
+            nodes: nodes
+        });
+    }
+
+    updateDisableAll(value) {
+        this.setState({ disableAll: value });
     }
 
     updateSolution(solution) {
@@ -143,10 +158,12 @@ class Main extends React.Component {
                                 nodes={this.state.nodes}
                                 segments={this.state.segments}
                                 startNode={this.state.startNode}
+                                updateStartNode={this.updateStartNode}
                                 render={this.updatePattern}
                                 updatePlay={this.updatePlay}
                                 updateSolution={this.updateSolution}
-                                reset={this.reset} />}
+                                reset={this.reset}
+                                updateDisableAll={this.updateDisableAll} />}
 
                         <Canvas
                             create={this.state.create}

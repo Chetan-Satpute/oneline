@@ -112,3 +112,39 @@ export function reset() {
 
     this.updatePattern(this.state.nodes, segments);
 }
+
+export function renderSelected(callBack, nodes, segments, index, render) {
+
+    nodes[index].selected = true;
+
+    var exit = false;
+
+    var interval = setInterval(() => {
+
+        if (exit) {
+            nodes[index].selected = false;
+            clearInterval(interval);
+            callBack();
+        }
+
+        exit = true;
+
+        render(nodes, segments);
+    }, 250);
+}
+
+export function noSolution(nodes, segments, render, updatePlay) {
+
+    segments.forEach(segment => {
+        segment.color = "red";
+        segment.active = true;
+        segment.flow = {
+            endNode: segment.a,
+            percent: 100
+        }
+    });
+
+    render(nodes, segments);
+
+    updatePlay(false);
+}

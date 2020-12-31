@@ -18,8 +18,12 @@ class Solve extends React.Component {
         this.solution = [];
 
         this.makeMove = utils.makeMove.bind(this);
+        this.preStep = this.preStep.bind(this);
         this.step = this.step.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
+
+        // Odd count for theorem test
+        this.oddNodes = [];
 
         this.solving = true;
     }
@@ -31,13 +35,74 @@ class Solve extends React.Component {
         // Reset
         this.props.reset();
 
-        this.stack = this.availableMoves(this.props.startNode);
+        this.it = 0;
+        this.preStep();
+    }
 
-        this.step();
+    /**
+     * 
+     * Theorem:
+     *      A connected graph G has an Euler walk 
+     *          if and only if 
+     *      Precisely 0 or 2 nodes in G have odd degree
+     * 
+     */
+    preStep() {
 
+        if (this.it === 0) {
+            this.props.updateDisableAll(true);
+        }
+
+        if (this.it < this.props.nodes.length) {
+
+            utils.renderSelected(
+                this.preStep, 
+                this.props.nodes,
+                this.props.segments, 
+                this.it, 
+                this.props.render
+            );
+
+            if (this.props.nodes[this.it].degree % 2 !== 0) {
+                this.oddNodes.push(this.props.nodes[this.it]);
+            }
+
+            this.it = this.it + 1;
+        } else {
+
+            console.log(`Length: ${this.oddNodes.length}`);
+            if (this.oddNodes.length === 2) {
+
+                console.log("2 executed");
+                
+                this.props.updateStartNode(this.oddNodes[0]);
+
+                this.stack = this.availableMoves(this.oddNodes[0]);
+                this.step();
+            } else if (this.oddNodes.length === 0) {
+
+                console.log("0 executed");
+
+                this.props.updateStartNode(this.props.nodes[0]);
+                
+                this.stack = this.availableMoves(this.props.nodes[0]);
+                this.step();
+            } else {
+
+                console.log("none executed");
+
+                utils.noSolution(this.props.nodes, this.props.segments, this.props.render, this.props.updatePlay);
+            }
+
+            this.it = 0;
+            this.props.updateDisableAll(false);
+        }
     }
 
     step() {
+
+        console.log("called Step");
+        console.log(this.stack);
 
         // Solving in process
         if (this.solving) {
@@ -103,20 +168,22 @@ class Solve extends React.Component {
                 // If not won
                 // Render all segments as red
     
-                var segments = this.props.segments;
+                // var segments = this.props.segments;
     
-                segments.forEach(segment => {
-                    segment.color = "red";
-                    segment.active = true;
-                    segment.flow = {
-                        endNode: segment.a,
-                        percent: 100
-                    }
-                });
+                // segments.forEach(segment => {
+                //     segment.color = "red";
+                //     segment.active = true;
+                //     segment.flow = {
+                //         endNode: segment.a,
+                //         percent: 100
+                //     }
+                // });
     
-                this.props.render(this.props.nodes, this.props.segments);
+                // this.props.render(this.props.nodes, this.props.segments);
     
-                this.props.updatePlay(false);
+                // this.props.updatePlay(false);
+
+                // utils.noSolution(this.props.nodes, this.props.segments, this.props.render, this.props.updatePlay);
             }
         } else {
 

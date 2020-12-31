@@ -7,12 +7,15 @@ class Node {
         this.outerRadius = this.radius + 10;
         this.active = true;
         this.selected = false;
+        this.degree = 0;
     }
 
     moveTo(position) {
         this.x = position.x;
         this.y = position.y;
     }
+
+
 
     draw(ctx) {
 

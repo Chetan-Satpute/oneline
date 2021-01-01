@@ -10,7 +10,7 @@ class NavBar extends React.Component {
 
                     <span>
                         <a href="https://github.com/Chetan-Satpute/oneline">
-                        <img src={github} style={{ width:"30%" }} />
+                        <img src={github} style={{ width:"30%" }} alt="Github repository link" />
                         </a>
                     </span>
 

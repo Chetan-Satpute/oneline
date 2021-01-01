@@ -20,6 +20,8 @@ class Solve extends React.Component {
         this.makeMove = utils.makeMove.bind(this);
         this.preStep = this.preStep.bind(this);
         this.step = this.step.bind(this);
+
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
 
         // Odd count for theorem test
@@ -29,14 +31,21 @@ class Solve extends React.Component {
     }
 
     componentDidMount() {
-        
-        // Solving starts here
 
         // Reset
         this.props.reset();
 
-        this.it = 0;
-        this.preStep();
+        if (this.props.nodes.length === 0 || this.props.segments.length === 0) {
+            alert("Please Draw a pattern!!");
+
+            this.props.updatePlay(false);
+            return;
+        } else {
+
+            // Iterator for Nodes list in prestep function
+            this.it = 0;
+            this.preStep();
+        }
     }
 
     /**
@@ -48,8 +57,14 @@ class Solve extends React.Component {
      * 
      */
     preStep() {
+        /**
+         * Check degree of all nodes
+         * Push nodes with odd degree in this.oddNodes
+         */
 
         if (this.it === 0) {
+
+            // Disable controll buttons until All nodes are analysed
             this.props.updateDisableAll(true);
         }
 
@@ -70,41 +85,41 @@ class Solve extends React.Component {
             this.it = this.it + 1;
         } else {
 
-            console.log(`Length: ${this.oddNodes.length}`);
+            /**
+             * If there are exactly 2 or 0 nodes with odd degree
+             * A solution is possible Hence call step to find solution
+             * 
+             * Else no solution possible
+             */
             if (this.oddNodes.length === 2) {
 
-                console.log("2 executed");
-                
                 this.props.updateStartNode(this.oddNodes[0]);
-
                 this.stack = this.availableMoves(this.oddNodes[0]);
                 this.step();
             } else if (this.oddNodes.length === 0) {
 
-                console.log("0 executed");
-
                 this.props.updateStartNode(this.props.nodes[0]);
-                
                 this.stack = this.availableMoves(this.props.nodes[0]);
                 this.step();
             } else {
 
-                console.log("none executed");
-
-                utils.noSolution(this.props.nodes, this.props.segments, this.props.render, this.props.updatePlay);
+                utils.noSolution(
+                    this.props.nodes, 
+                    this.props.segments, 
+                    this.props.render, 
+                    this.props.updatePlay
+                );
             }
 
             this.it = 0;
+
+            // Enable controll buttons after traversal of all nodes is done
             this.props.updateDisableAll(false);
         }
     }
 
     step() {
 
-        console.log("called Step");
-        console.log(this.stack);
-
-        // Solving in process
         if (this.solving) {
 
             if (this.moves.length) {
@@ -118,17 +133,13 @@ class Solve extends React.Component {
             } else if (this.stack.length) {
     
                 // Make a Move
-    
                 var move = this.stack.pop();
-    
                 this.makeMove(move, this.step, this.props.nodes, this.props.segments, this.props.render);
-                
-                this.explored.add(move.segment);
     
+                this.explored.add(move.segment);
                 this.solution.push(move);
     
                 var availMoves = this.availableMoves(move.endNode);
-    
                 if (availMoves.length) {
     
                     availMoves.forEach(m => {
@@ -140,6 +151,7 @@ class Solve extends React.Component {
                 } else if (this.won()) {
     
                     this.props.updateSolution(this.solution);
+                    this.solving = false;
                 } else {
     
                     // Retrieve
@@ -163,33 +175,7 @@ class Solve extends React.Component {
                         }
                     }
                 }
-            } else if (!this.won()) {
-                
-                // If not won
-                // Render all segments as red
-    
-                // var segments = this.props.segments;
-    
-                // segments.forEach(segment => {
-                //     segment.color = "red";
-                //     segment.active = true;
-                //     segment.flow = {
-                //         endNode: segment.a,
-                //         percent: 100
-                //     }
-                // });
-    
-                // this.props.render(this.props.nodes, this.props.segments);
-    
-                // this.props.updatePlay(false);
-
-                // utils.noSolution(this.props.nodes, this.props.segments, this.props.render, this.props.updatePlay);
             }
-        } else {
-
-            // // Solving is done
-            // // Clear canvas
-            // this.props.reset();
         }
     }
 
@@ -197,6 +183,7 @@ class Solve extends React.Component {
 
         // Solving stops here
         this.solving = false;
+        
     }
 
     won() { return this.explored.size === this.props.segments.length }

@@ -1,4 +1,5 @@
 export function get_coordinates(canvas, event) {
+
     var rect = canvas.getBoundingClientRect();
     var top = Math.ceil(rect.top);
     var left = Math.ceil(rect.left);
@@ -134,6 +135,8 @@ export function renderSelected(callBack, nodes, segments, index, render) {
 }
 
 export function noSolution(nodes, segments, render, updatePlay) {
+
+    alert("No solution possible!");
 
     segments.forEach(segment => {
         segment.color = "red";

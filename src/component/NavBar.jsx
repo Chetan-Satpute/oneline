@@ -1,4 +1,5 @@
 import React from 'react';
+import github from './images/GitHub.png';
 
 class NavBar extends React.Component {
 
@@ -7,10 +8,10 @@ class NavBar extends React.Component {
             <nav className="navbar navbar-dark bg-dark">
                 <div className="container-fluid">
 
-                    <span
-                        onClick={() => { this.props.showBoard(false) }}>
-                        {this.props.board &&
-                            <i id="backarrow" className="btn m-2"></i>}
+                    <span>
+                        <a href="https://github.com/Chetan-Satpute/oneline">
+                        <img src={github} style={{ width:"30%" }} />
+                        </a>
                     </span>
 
                     <span className="navbar-brand fs-2">

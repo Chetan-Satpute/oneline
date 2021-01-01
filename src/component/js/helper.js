@@ -106,20 +106,6 @@ export function handleClick(event) {
             });
         }
     }
-    //  else {
-
-    //     if (node) {
-
-    //         if (this.props.startNode) {
-    //             nodeList[nodeList.indexOf(this.props.startNode)].selected = false;
-    //         }
-
-    //         nodeList[nodeList.indexOf(node)].selected = true;
-
-    //         this.props.updatePattern(nodeList, segmentList);
-    //         this.props.updateStartNode(node);
-    //     }
-    // }
 }
 
 export function handleMove(event) {
@@ -174,6 +160,12 @@ export function handleMove(event) {
         this.setState({
             hoverSegment: new Segment(this.state.hoverSegment.a, node)
         });
+    }
+
+    // Discard segment creation if not in create
+    if (!this.props.create) {
+        console.log("called");
+        this.setState({ hoverSegment: null });
     }
 }
 

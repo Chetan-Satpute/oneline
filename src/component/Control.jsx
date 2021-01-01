@@ -14,7 +14,7 @@ class Control extends React.Component {
                     <ControlButton 
                         text="Start Solving"
                         color="primary"
-                        onClick={() => {this.props.updateCreate(true, false)}} />
+                        onClick={() => {this.props.updateCreate(false)}} />
 
                 </ControlButtonPannel>
                 : <ControlButtonPannel>
@@ -34,7 +34,7 @@ class Control extends React.Component {
                     <ControlButton
                         text="Edit"
                         color="primary"
-                        onClick={() => {this.props.updateCreate(true, true)}}
+                        onClick={() => {this.props.updateCreate(true)}}
                         disabled={this.props.disableAll || this.props.play} />
                 
                 </ControlButtonPannel> }

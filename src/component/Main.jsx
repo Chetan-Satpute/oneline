@@ -1,7 +1,7 @@
 import React from 'react';
 import Control from './Control';
 import Canvas from './Canvas';
-import Solve from './js/Solve';
+import Solve from './Solve';
 import * as utils from './js/utils';
 
 class Main extends React.Component {

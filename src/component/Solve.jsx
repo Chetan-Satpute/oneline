@@ -1,5 +1,5 @@
 import React from 'react';
-import * as utils from './utils';
+import * as utils from './js/utils';
 
 class Solve extends React.Component {
     constructor(props) {

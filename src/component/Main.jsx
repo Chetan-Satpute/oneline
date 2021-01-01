@@ -85,6 +85,15 @@ class Main extends React.Component {
                     clearInterval(interval);
                 }
             }, 1000)
+
+            var nodeList = this.state.nodes;
+
+            // Remove startNode
+            if (this.state.startNode) {
+                nodeList[nodeList.indexOf(this.state.startNode)].selected = false;
+            }
+
+            this.setState({ nodes: nodeList });
         }
 
         this.setState({ play: value });

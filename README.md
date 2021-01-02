@@ -10,8 +10,8 @@ Formally, a pattern is a graph and objective of this puzzle is to find Euler Wal
 
 This web app is an automation of one line puzzle, user creates a pattern (Graph) on canvas and web app will find a solution (Euler Walk) if possible. It uses basics of graph theory and graph traversal algorithms to find solution.
 
-<!-- <img src="./Desktop1.png" /> -->
-<img src="./Mobile.png" style="margin-left: 30%; margin-right: 30%; width: 40%;" />
+<img src="./Desktop1.png" />
+<!-- <img src="./Mobile.png" style="margin-left: 30%; margin-right: 30%; width: 40%;" /> -->
 
 <br>
 <hr>

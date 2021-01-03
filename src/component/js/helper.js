@@ -33,7 +33,7 @@ export function handleClick(event) {
         return;
     }
 
-    if (this.props.create) {
+    if (this.props.play === false) {
 
         // Create a new node at current position
         // If it does not already exist
@@ -163,7 +163,7 @@ export function handleMove(event) {
     }
 
     // Discard segment creation if not in create
-    if (!this.props.create) {
+    if (this.props.play) {
         console.log("called");
         this.setState({ hoverSegment: null });
     }

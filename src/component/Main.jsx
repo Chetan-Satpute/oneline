@@ -11,24 +11,22 @@ class Main extends React.Component {
         this.state = {
             nodes: [],
             segments: [],
-            create: true,
             startNode: null,
 
             play: false,
             solution: null,
-            disableAll: false
+            disablectrl: false
         }
 
         // Iterator for solution
         // Used when renderting solution
         this.itsol = 0;
 
-        this.updateCreate = this.updateCreate.bind(this);
         this.updateStartNode = this.updateStartNode.bind(this);
         this.updatePattern = this.updatePattern.bind(this);
         this.updatePlay = this.updatePlay.bind(this);
         this.updateSolution = this.updateSolution.bind(this);
-        this.updateDisableAll = this.updateDisableAll.bind(this);
+        this.updatedisablectrl = this.updatedisablectrl.bind(this);
         this.showSolution = this.showSolution.bind(this);
         this.makeMove = utils.makeMove.bind(this);
         this.reset = utils.reset.bind(this);
@@ -42,37 +40,11 @@ class Main extends React.Component {
         });
     }
 
-    updateCreate(createValue) {
-
-        this.reset();
-
-        if (createValue) {
-
-            var nodeList = this.state.nodes;
-
-            // Remove startNode
-            if (this.state.startNode) {
-                nodeList[nodeList.indexOf(this.state.startNode)].selected = false;
-            }
-
-            this.setState({
-                nodes: nodeList,
-                startNode: null,
-                solution: null,
-                create: createValue
-            });
-
-        } else {
-
-            this.setState({ create: createValue });
-        }
-    }
-
     updatePlay(value) {
 
         if (!value) {
 
-            this.setState({ disableAll: true });
+            this.setState({ disablectrl: true });
 
             var i = 0;
             var interval = setInterval(() => {
@@ -81,7 +53,7 @@ class Main extends React.Component {
                 console.log(i);
 
                 if (i === 1) {
-                    this.setState({ disableAll: false });
+                    this.setState({ disablectrl: false });
                     clearInterval(interval);
                 }
             }, 1000)
@@ -110,8 +82,8 @@ class Main extends React.Component {
         });
     }
 
-    updateDisableAll(value) {
-        this.setState({ disableAll: value });
+    updatedisablectrl(value) {
+        this.setState({ disablectrl: value });
     }
 
     updateSolution(solution) {
@@ -124,7 +96,7 @@ class Main extends React.Component {
     showSolution() {
 
         if (this.itsol === 0) {
-            this.setState({ disableAll: true });
+            this.setState({ disablectrl: true });
             this.reset();
         }
 
@@ -139,7 +111,7 @@ class Main extends React.Component {
         } else {
 
             this.itsol = 0;
-            this.setState({ disableAll: false });
+            this.setState({ disablectrl: false });
         }
     }
 
@@ -157,10 +129,10 @@ class Main extends React.Component {
                         updatePlay={this.updatePlay}
                         updateSolution={this.updateSolution}
                         updateStartNode={this.updateStartNode}
-                        updateDisableAll={this.updateDisableAll} />}
+                        updatedisablectrl={this.updatedisablectrl} />}
 
                 <Canvas
-                    create={this.state.create}
+                    play={this.state.play}
                     startNode={this.state.startNode}
                     updateStartNode={this.updateStartNode}
                     nodes={this.state.nodes}
@@ -168,13 +140,11 @@ class Main extends React.Component {
                     updatePattern={this.updatePattern} />
 
                 <Control
-                    create={this.state.create}
-                    updateCreate={this.updateCreate}
                     play={this.state.play}
                     updatePlay={this.updatePlay}
                     solution={this.state.solution}
                     showSolution={this.showSolution}
-                    disableAll={this.state.disableAll} />
+                    disablectrl={this.state.disablectrl} />
             </main>
         );
     }

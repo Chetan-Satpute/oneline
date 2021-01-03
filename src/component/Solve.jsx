@@ -65,7 +65,7 @@ class Solve extends React.Component {
         if (this.it === 0) {
 
             // Disable controll buttons until All nodes are analysed
-            this.props.updateDisableAll(true);
+            this.props.updatedisablectrl(true);
         }
 
         if (this.it < this.props.nodes.length) {
@@ -114,7 +114,7 @@ class Solve extends React.Component {
             this.it = 0;
 
             // Enable controll buttons after traversal of all nodes is done
-            this.props.updateDisableAll(false);
+            this.props.updatedisablectrl(false);
         }
     }
 

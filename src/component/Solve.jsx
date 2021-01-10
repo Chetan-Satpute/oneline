@@ -150,6 +150,7 @@ class Solve extends React.Component {
     
                 } else if (this.won()) {
     
+                    this.props.updatePlay(false);
                     this.props.updateSolution(this.solution);
                     this.solving = false;
                 } else {

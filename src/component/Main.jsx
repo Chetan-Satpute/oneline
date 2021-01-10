@@ -87,10 +87,7 @@ class Main extends React.Component {
     }
 
     updateSolution(solution) {
-
         this.setState({ solution: solution });
-
-        this.updatePlay(false);
     }
 
     showSolution() {
@@ -137,7 +134,8 @@ class Main extends React.Component {
                     updateStartNode={this.updateStartNode}
                     nodes={this.state.nodes}
                     segments={this.state.segments}
-                    updatePattern={this.updatePattern} />
+                    updatePattern={this.updatePattern}
+                    updateSolution={this.updateSolution} />
 
                 <Control
                     play={this.state.play}

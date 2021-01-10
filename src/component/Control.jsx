@@ -14,6 +14,14 @@ class Control extends React.Component {
                     disabled={this.props.disablectrl}>
                     {this.props.play ? "Stop":"Solve"}
                 </button>
+
+                <button
+                    className={`btn btn-primary cbtn m-3`}
+                    onClick={() => {this.props.showSolution()}}
+                    type="button" 
+                    disabled={!this.props.solution || this.props.disablectrl}>
+                    Solution
+                </button>
                 
             </div>
         );

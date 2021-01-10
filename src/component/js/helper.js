@@ -31,6 +31,8 @@ export function handleClick(event) {
     if (this.moved) {
         this.moved = false;
         return;
+    } else {
+        this.props.updateSolution(null);
     }
 
     if (this.props.play === false) {

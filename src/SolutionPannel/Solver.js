@@ -1,5 +1,4 @@
 import React from "react";
-import Solve from "../component/Solve";
 
 function nextFrame() {
   return new Promise(requestAnimationFrame)

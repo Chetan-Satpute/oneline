@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { checkSegment, get_coordinates } from "./js/Helper";
+import { checkSegment, get_coordinates, node_overlap } from "./js/Helper";
 import "./Canvas.css";
 import Node from "./js/Node";
-import { node_overlap } from "../component/js/utils";
 import Segment from "./js/Segment";
 import Solver from "../SolutionPannel/Solver";
 

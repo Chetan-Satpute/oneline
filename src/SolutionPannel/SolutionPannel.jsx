@@ -3,7 +3,7 @@ import "./SolutionPannel.css";
 
 function SolutionPannel({ data, setSolution, close }) {
   if (!data) {
-    alert("No solution found");
+    alert("No solution found!!");
     setSolution(false);
   }
 

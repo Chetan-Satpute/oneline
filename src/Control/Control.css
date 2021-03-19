@@ -1,0 +1,7 @@
+#Control {
+  flex: 1 1 10%;
+}
+
+.control-btn {
+  flex: 1 1 auto;
+}

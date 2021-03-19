@@ -13,7 +13,7 @@ function NavBar() {
         </span>
 
         <span>
-          <h1 className="navbar-brand fs-2">One Line</h1>
+          <h1 className="navbar-brand fs-2 m-0">One Line</h1>
         </span>
       </div>
     </nav>

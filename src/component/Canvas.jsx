@@ -33,7 +33,6 @@ class Canvas extends React.Component {
 
         // Normalise coordinate system to use css pixels
         this.ctx.scale(scale, scale);
-  
     }
 
     componentWillUnmount() {

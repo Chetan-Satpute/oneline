@@ -4,9 +4,9 @@ import "./Canvas.css";
 import Node from "./js/Node";
 import { node_overlap } from "../component/js/utils";
 import Segment from "./js/Segment";
-import Solver from "../Solver/Solver";
+import Solver from "../SolutionPannel/Solver";
 
-function Canvas({ solve, clear, setSolve, setClear }) {
+function Canvas({ solve, clear, setSolve, setClear, setSolutionData }) {
   const canvasRef = useRef(null);
 
   const [nodes, setNodes] = useState([]);
@@ -49,6 +49,10 @@ function Canvas({ solve, clear, setSolve, setClear }) {
         setSolve(false);
       };
 
+      const setSolution = (data) => {
+        setSolutionData(data);
+      };
+
       Solver(nodes, segments, render, done, canvasRef, setSolution);
     }
   }, [solve, setSolve]);
@@ -72,6 +76,8 @@ function Canvas({ solve, clear, setSolve, setClear }) {
     let ctx = canvas.getContext("2d");
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     if (hoverSegment) hoverSegment.draw(ctx);
     segments.forEach((segment) => segment.draw(ctx));

@@ -1,10 +1,14 @@
 import React from "react";
 import "./Control.css";
 
-function Control({ solve, clear, disable }) {
+function Control({ solve, clear, solution, disable }) {
   return (
     <div id="Control" className="d-flex justify-content-center">
-      <button className="btn btn-success btn-lg m-3 control-btn" disabled={disable}>
+      <button
+        className="btn btn-success btn-lg m-3 control-btn"
+        onClick={() => solution(true)}
+        disabled={disable}
+      >
         Solution
       </button>
       <button

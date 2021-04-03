@@ -10,7 +10,7 @@ function SolutionPannel({ data, setSolution, close }) {
   return (
     <React.Fragment>
       {data && (
-        <div id="SolutionPannel" className="card rounded shadow-lg">
+        <div id="SolutionPannel" className="card rounded shadow-lg border-light">
           <div className="card-header text-white bg-secondary">
             <button
               type="button"
@@ -18,7 +18,7 @@ function SolutionPannel({ data, setSolution, close }) {
               onClick={close}
             ></button>
           </div>
-          <div className="card-body p-3" id="Solution-Carousel">
+          <div className="card-body" id="Solution-Carousel">
             {data.map((imgData, index) => (
               <img
                 src={imgData}

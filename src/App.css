@@ -9,3 +9,16 @@ main {
   display: flex;
   flex-direction: column;
 }
+
+.Info {
+  margin: auto;
+  position: absolute;
+  height: 90%;
+  width: 100%;
+  max-width: 800px;
+  left: 0;
+  right: 0;
+  top: 5%;
+  bottom: 0;
+  z-index: 999;
+}
